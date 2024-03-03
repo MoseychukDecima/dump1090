@@ -598,7 +598,7 @@ if (serial_port < 0)
 
     // write(serial_port, msg, msgLen);
 	// write(serial_port, msg, p - (char*)msg);
-	 write(serial_port, p, strlen(p));
+	 write(serial_port, p, p - (char*)msg);
 	// write(serial_port, p, 32);
      close(serial_port);
 	 
