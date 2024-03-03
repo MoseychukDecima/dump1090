@@ -270,8 +270,8 @@ void modesSendRawOutput(struct modesMessage *mm)
     int j;
     unsigned char * pTimeStamp;
 	
-    int serial_port = open("/dev/ttyAMA0", O_RDWR);
-    //int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
+   // int serial_port = open("/dev/ttyAMA0", O_RDWR);
+    int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
     struct termios tty;
 
     if (tcgetattr(serial_port, &tty) != 0)
@@ -307,47 +307,8 @@ void modesSendRawOutput(struct modesMessage *mm)
     {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
     }
-	printf("Test RTLSDR ttyAMA0\n");
+	//printf("Test RTLSDR ttyAMA0\n");
 
-
-
-    int serial_port1 = open("/dev/ttyS0", O_RDWR); // OrangePi
-    struct termios tty1;
-
-    if (tcgetattr(serial_port1, &tty1) != 0)
-    {
-        printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
-    }
-    /* настройки порта */
-    tty1.c_cflag &= ~PARENB;
-    tty1.c_cflag &= ~CSTOPB;
-    tty1.c_cflag &= ~CSIZE;
-    tty1.c_cflag |= CS8;
-    tty1.c_cflag &= ~CRTSCTS;
-    tty1.c_cflag |= CREAD | CLOCAL;
-
-    tty1.c_lflag &= ~ICANON;
-    tty1.c_lflag &= ~ECHO;
-    tty1.c_lflag &= ~ECHOE;
-    tty1.c_lflag &= ~ECHONL;
-    tty1.c_lflag &= ~ISIG;
-    tty1.c_iflag &= ~(IXON | IXOFF | IXANY);
-    tty1.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
-
-    tty1.c_oflag &= ~OPOST;
-    tty1.c_oflag &= ~ONLCR;
-
-    tty1.c_cc[VTIME] = 10;
-    tty1.c_cc[VMIN] = 0;
-
-    cfsetispeed(&tty1, B115200);
-    cfsetospeed(&tty1, B115200);
-
-    if (tcsetattr(serial_port1, TCSANOW, &tty1) != 0)
-    {
-        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
-    }
-	printf("Test RTLSDR ttyS0\n");
 
 
     if (Modes.mlat && mm->timestampMsg) {
@@ -371,12 +332,10 @@ void modesSendRawOutput(struct modesMessage *mm)
     *p++ = '\n';
 
 
-     write(serial_port, msg, p - msg);
+     write(serial_port, msg, strlen(p));
+	 //write(serial_port, msg, p - msg);
      close(serial_port);
-	 
-	 
-     write(serial_port1, msg, p - msg);
-     close(serial_port1);
+
 
     Modes.rawOutUsed += ((msgLen*2) + 3);
     if (Modes.rawOutUsed >= Modes.net_output_raw_size)
