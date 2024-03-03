@@ -56,14 +56,14 @@
 #include <stdarg.h>
 
 
-#include <stdio.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <string.h>
 
 // Linux headers
-#include <fcntl.h> // Contains file controls like O_RDWR
-#include <errno.h> // Error integer and strerror() function
+//#include <fcntl.h> // Contains file controls like O_RDWR
+//#include <errno.h> // Error integer and strerror() function
 #include <termios.h> // Contains POSIX terminal control definitions
-#include <unistd.h> // write(), read(), close()
+//#include <unistd.h> // write(), read(), close()
 //
 // ============================= Networking =============================
 //
@@ -516,7 +516,8 @@ static void send_beast_heartbeat(struct net_service *service)
 //
 // Write raw output to TCP clients
 //
-static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
+//static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
+	static void modesSendRawOutput(struct modesMessage *mm) {
   
     char msg[128], *p = msg;
     int j;
@@ -525,14 +526,13 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
 	//int serial_port = open("/dev/ttyAMA0", O_RDWR);
     // Open the serial port as a file
   int serial_port = open("/dev/ttyUSB0", O_RDWR);
-
-// Check for errors
-if (serial_port < 0) 
-{
-    printf("Error %i from open: %s\n", errno, strerror(errno));
-}
     struct termios tty;
 
+    if (tcgetattr(serial_port, &tty) != 0)
+    {
+        printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
+    }
+    /* настройки порта */
     tty.c_cflag &= ~PARENB;   // Clear parity bit, disabling parity (most common)
     tty.c_cflag &= ~CSTOPB;   // Clear stop field, only one stop bit used in communication (most common)
     tty.c_cflag &= ~CSIZE;    // Clear all the size bits, then use one of the statements bel
@@ -572,8 +572,8 @@ if (serial_port < 0)
         return;
 */
     // Don't forward unreliable messages
-    if ((a && !a->reliable) && !mm->reliable)
-        return;
+   // if ((a && !a->reliable) && !mm->reliable)
+   //     return;
 /*
     int msgLen = mm->msgbits / 8;
     char *p = prepareWrite(&Modes.raw_out, msgLen*2 + 15);
@@ -612,17 +612,13 @@ if (serial_port < 0)
     close(serial_port);
 
 
-
-
-
-
     // write(serial_port, msg, msgLen);
 	// write(serial_port, msg, p - (char*)msg);
 	// write(serial_port, p, 16);
 	// write(serial_port, p, 32);
     // close(serial_port);
 	 
-    completeWrite(&Modes.raw_out, p);
+  //  completeWrite(&Modes.raw_out, p);
 	// write(serial_port, *p, strlen(p));
     // close(serial_port);
 }
@@ -1097,7 +1093,8 @@ void modesQueueOutput(struct modesMessage *mm, struct aircraft *a) {
     // Delegate to the format-specific outputs, each of which makes its own decision about filtering messages
     modesSendSBSOutput(mm, a);
     modesSendStratuxOutput(mm, a);
-    modesSendRawOutput(mm, a);
+    modesSendRawOutput(mm);
+	//modesSendRawOutput(mm, a);
     modesSendBeastVerbatimOutput(mm);
     modesSendBeastVerbatimLocalOutput(mm);
     modesSendBeastCookedOutput(mm, a);
