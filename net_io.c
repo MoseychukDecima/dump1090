@@ -549,7 +549,7 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
     {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
     }
-	printf("Test RTLSDR ttyAMA0\n");
+	//printf("Test RTLSDR ttyAMA0\n");
 
 
 
@@ -587,7 +587,8 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
     *p++ = ';';
     *p++ = '\n';
 //strlen(ip)
-     write(serial_port, msg, p - (char*)msg);
+     write(serial_port, msg, strlen(msg));
+	 //write(serial_port, msg, p - (char*)msg);
      close(serial_port);
 	 
     completeWrite(&Modes.raw_out, p);
