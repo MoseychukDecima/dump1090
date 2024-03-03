@@ -1,4 +1,0 @@
-*.xz binary
-dsp/generated/* merge=binary linguist-generated
-cpu_features/** linguist-vendored
-starch/** linguist-vendored
