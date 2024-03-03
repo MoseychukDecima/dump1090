@@ -518,7 +518,8 @@ static void send_beast_heartbeat(struct net_service *service)
 //
 static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
   
-
+    char msg[128], *p = msg;
+    int j;
   // Don't ever forward mlat messages via raw output.
     // int serial_port = open("/dev/serial0", O_RDWR);
 	//int serial_port = open("/dev/ttyAMA0", O_RDWR);
@@ -561,7 +562,7 @@ if (serial_port < 0)
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
     }
 
-
+/*
  if (mm->source == SOURCE_MLAT)
         return;
 
@@ -580,7 +581,7 @@ if (serial_port < 0)
         return;
 
     if (Modes.mlat && mm->timestampMsg) {
-        /* timestamp, big-endian */
+        // timestamp, big-endian 
         sprintf(p, "@%012" PRIX64,
                 mm->timestampMsg);
         p += 13;
@@ -595,12 +596,31 @@ if (serial_port < 0)
 
     *p++ = ';';
     *p++ = '\n';
+*/
+
+
+    *p++ = '*';
+    for (j = 0; j < mm->msgbits/8; j++) 
+    {
+        sprintf(p, "%02X", mm->msg[j]);
+        p += 2;
+    }
+    *p++ = ';';
+    *p++ = '\n';
+
+    write(serial_port, msg, p - msg);
+    close(serial_port);
+
+
+
+
+
 
     // write(serial_port, msg, msgLen);
 	// write(serial_port, msg, p - (char*)msg);
-	 write(serial_port, p, 16);
+	// write(serial_port, p, 16);
 	// write(serial_port, p, 32);
-     close(serial_port);
+    // close(serial_port);
 	 
     completeWrite(&Modes.raw_out, p);
 	// write(serial_port, *p, strlen(p));
