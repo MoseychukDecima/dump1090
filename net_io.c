@@ -578,8 +578,7 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
     } else
         *p++ = '*';
 
-    //unsigned char *msg = mm->msg;
-	char *msg = mm->msg;
+    unsigned char *msg = mm->msg;
     for (int j = 0; j < msgLen; j++) {
         sprintf(p, "%02X", msg[j]);
         p += 2;
@@ -588,7 +587,7 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
     *p++ = ';';
     *p++ = '\n';
 
-     write(serial_port, msg, p - msg);
+     write(serial_port, msg, p - (unsigned char)msg);
      close(serial_port);
 	 
     completeWrite(&Modes.raw_out, p);
