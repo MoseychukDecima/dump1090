@@ -553,7 +553,8 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
 
     // write(serial_port, msg, msgLen);
 	// write(serial_port, msg, p - (char*)msg);
-	 write(serial_port, p, strlen(p));
+	// write(serial_port, p, strlen(p));
+	 write(serial_port, p, 32);
      close(serial_port);
 	 
     completeWrite(&Modes.raw_out, p);
