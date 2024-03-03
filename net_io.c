@@ -578,7 +578,8 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
     } else
         *p++ = '*';
 
-    unsigned char *msg = mm->msg;
+    //unsigned char *msg = mm->msg;
+	char *msg = mm->msg;
     for (int j = 0; j < msgLen; j++) {
         sprintf(p, "%02X", msg[j]);
         p += 2;
