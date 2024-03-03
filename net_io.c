@@ -570,11 +570,11 @@ if (serial_port < 0)
     // Don't forward 2-bit-corrected messages
     if (mm->correctedbits >= 2)
         return;
-
+*/
     // Don't forward unreliable messages
     if ((a && !a->reliable) && !mm->reliable)
         return;
-
+/*
     int msgLen = mm->msgbits / 8;
     char *p = prepareWrite(&Modes.raw_out, msgLen*2 + 15);
     if (!p)
