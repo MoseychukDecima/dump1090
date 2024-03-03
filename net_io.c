@@ -54,8 +54,16 @@
 
 #include <assert.h>
 #include <stdarg.h>
-#include <fcntl.h>  // for open()
-#include <unistd.h> // for write()
+
+
+#include <stdio.h>
+#include <string.h>
+
+// Linux headers
+#include <fcntl.h> // Contains file controls like O_RDWR
+#include <errno.h> // Error integer and strerror() function
+#include <termios.h> // Contains POSIX terminal control definitions
+#include <unistd.h> // write(), read(), close()
 //
 // ============================= Networking =============================
 //
@@ -515,7 +523,44 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
     // int serial_port = open("/dev/serial0", O_RDWR);
 	//int serial_port = open("/dev/ttyAMA0", O_RDWR);
     // Open the serial port as a file
-    int serial_port = open("/dev/ttyS0", O_WRONLY);
+  int serial_port = open("/dev/ttyUSB0", O_RDWR);
+
+// Check for errors
+if (serial_port < 0) 
+{
+    printf("Error %i from open: %s\n", errno, strerror(errno));
+}
+    struct termios tty;
+
+    tty.c_cflag &= ~PARENB;   // Clear parity bit, disabling parity (most common)
+    tty.c_cflag &= ~CSTOPB;   // Clear stop field, only one stop bit used in communication (most common)
+    tty.c_cflag &= ~CSIZE;    // Clear all the size bits, then use one of the statements bel
+    tty.c_cflag |= CS8;       // 8 bits per byte (most common)
+    tty.c_cflag &= ~CRTSCTS;  // Disable RTS/CTS hardware flow control (most common)
+    tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines (CLOCAL = 1)
+
+    tty.c_lflag &= ~ICANON;   //Canonical mode is disabled with:
+    tty.c_lflag &= ~ECHO;     // Disable echo
+    tty.c_lflag &= ~ECHOE;    // Disable erasure
+    tty.c_lflag &= ~ECHONL;   // Disable new-line echo
+    tty.c_lflag &= ~ISIG;     // Disable interpretation of INTR, QUIT and SUSP
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
+    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL); // Disable any special handling of received bytes
+
+    tty.c_oflag &= ~OPOST;   // Prevent special interpretation of output bytes (e.g. newline chars)
+    tty.c_oflag &= ~ONLCR;   // Prevent conversion of newline to carriage return/line feed 
+
+    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    tty.c_cc[VMIN] = 0;
+
+    cfsetispeed(&tty, B115200);
+    cfsetospeed(&tty, B115200);
+
+    if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
+    {
+        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+    }
+
 
  if (mm->source == SOURCE_MLAT)
         return;
@@ -553,8 +598,8 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
 
     // write(serial_port, msg, msgLen);
 	// write(serial_port, msg, p - (char*)msg);
-	// write(serial_port, p, strlen(p));
-	 write(serial_port, p, 32);
+	 write(serial_port, p, strlen(p));
+	// write(serial_port, p, 32);
      close(serial_port);
 	 
     completeWrite(&Modes.raw_out, p);
