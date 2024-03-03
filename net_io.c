@@ -589,10 +589,10 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
 
     // write(serial_port, msg, strlen(msg));
 	// write(serial_port, msg, p - (char*)msg);
-	 write(serial_port, p,strlen(p));
-     close(serial_port);
 	 
     completeWrite(&Modes.raw_out, p);
+	 write(serial_port, &Modes.raw_out, p);
+     close(serial_port);
 }
 
 static void send_raw_heartbeat(struct net_service *service)
