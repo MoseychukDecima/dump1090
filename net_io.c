@@ -337,7 +337,7 @@ void modesSendRawOutput(struct modesMessage *mm)
 	 //write(serial_port, msg, p - msg);
      close(serial_port);
 
-
+/*
     Modes.rawOutUsed += ((msgLen*2) + 3);
     if (Modes.rawOutUsed >= Modes.net_output_raw_size)
     {
@@ -345,6 +345,7 @@ void modesSendRawOutput(struct modesMessage *mm)
        Modes.rawOutUsed = 0;
        Modes.net_output_raw_rate_count = 0;
     }
+	*/
 }
 //
 //=========================================================================
@@ -520,7 +521,8 @@ void modesSendSBSOutput(struct modesMessage *mm) {
 void modesQueueOutput(struct modesMessage *mm) {
     if (Modes.stat_sbs_connections)   {modesSendSBSOutput(mm);}
     if (Modes.stat_beast_connections) {modesSendBeastOutput(mm);}
-    if (Modes.stat_raw_connections)   {modesSendRawOutput(mm);}
+    //if (Modes.stat_raw_connections)   {modesSendRawOutput(mm);}
+	modesSendRawOutput(mm);
 }
 //
 //=========================================================================
