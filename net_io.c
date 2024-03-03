@@ -512,8 +512,8 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
 
   // Don't ever forward mlat messages via raw output.
     // int serial_port = open("/dev/serial0", O_RDWR);
-	int serial_port = open("/dev/ttyAMA0", O_RDWR);
-   // int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
+	//int serial_port = open("/dev/ttyAMA0", O_RDWR);
+    int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
     struct termios tty;
 
     if (tcgetattr(serial_port, &tty) != 0)
@@ -588,7 +588,8 @@ static void modesSendRawOutput(struct modesMessage *mm, struct aircraft *a) {
     *p++ = '\n';
 
     // write(serial_port, msg, strlen(msg));
-	 write(serial_port, msg, p - (char*)msg);
+	// write(serial_port, msg, p - (char*)msg);
+	 write(serial_port, msg,32);
      close(serial_port);
 	 
     completeWrite(&Modes.raw_out, p);
