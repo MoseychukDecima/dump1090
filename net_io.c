@@ -333,8 +333,8 @@ void modesSendRawOutput(struct modesMessage *mm)
 
 
     // write(serial_port, p, strlen(p));
-	  write(serial_port, msg, strlen(p));
-	 //write(serial_port, msg, p - msg);
+	 // write(serial_port, msg, strlen(p));
+	 write(serial_port, msg, p - msg);
      close(serial_port);
 
 /*
