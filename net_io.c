@@ -343,11 +343,11 @@ void modesSendRawOutput(struct modesMessage *mm)
     // write(serial_port, p, strlen(p));
 	 // write(serial_port, msg, strlen(p));
 	// write(serial_port, msg, p - msg);
-     close(serial_port);
+     //close(serial_port);
 
 
     Modes.rawOutUsed += ((msgLen*2) + 3);
-	write(serial_port, p, Modes.rawOutUsed);
+	write(serial_port, Modes.rawOut, Modes.rawOutUsed);
 	close(serial_port);
     if (Modes.rawOutUsed >= Modes.net_output_raw_size)
     {
