@@ -311,7 +311,8 @@ void modesSendRawOutput(struct modesMessage *mm)
 
 
 
-    if (Modes.mlat && mm->timestampMsg) {
+    if (Modes.mlat && mm->timestampMsg) 
+	{
         *p++ = '@';
         pTimeStamp = (unsigned char *) &mm->timestampMsg;
         for (j = 5; j >= 0; j--) {
@@ -331,13 +332,13 @@ void modesSendRawOutput(struct modesMessage *mm)
     *p++ = ';';
     *p++ = '\n';
 
-
+/*
    for (j = 0; j < strlen(p); j++) {
       	 write(serial_port, *p[j], 1);
     }
+*/
 
-
-
+   write(serial_port, msg, strlen(msg));
 
     // write(serial_port, p, strlen(p));
 	 // write(serial_port, msg, strlen(p));
