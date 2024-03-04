@@ -333,7 +333,7 @@ void modesSendRawOutput(struct modesMessage *mm)
 
 
    for (j = 0; j < strlen(p); j++) {
-      	 write(serial_port, p, 1);
+      	 write(serial_port, *p[j], 1);
     }
 
 
