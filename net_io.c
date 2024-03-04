@@ -264,7 +264,6 @@ void modesSendBeastOutput(struct modesMessage *mm) {
 //
 void modesSendRawOutput(struct modesMessage *mm) 
 { 
-    char msg[128];
     char *p = &Modes.rawOut[Modes.rawOutUsed];
     int  msgLen = mm->msgbits / 8;
     int j;
@@ -338,22 +337,25 @@ void modesSendRawOutput(struct modesMessage *mm)
     }
 */
 
-   write(serial_port, msg, strlen(msg));
+   
+   //write(serial_port, msg, strlen(msg));
 
     // write(serial_port, p, strlen(p));
 	 // write(serial_port, msg, strlen(p));
 	// write(serial_port, msg, p - msg);
      close(serial_port);
 
-/*
+
     Modes.rawOutUsed += ((msgLen*2) + 3);
+	write(serial_port, Modes.rawOut, Modes.rawOutUsed);
+	close(serial_port);
     if (Modes.rawOutUsed >= Modes.net_output_raw_size)
     {
        modesSendAllClients(Modes.ros, Modes.rawOut, Modes.rawOutUsed);
        Modes.rawOutUsed = 0;
        Modes.net_output_raw_rate_count = 0;
     }
-	*/
+	
 }
 //
 //=========================================================================
