@@ -211,9 +211,7 @@ struct ToArduino
 	uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
     double        lat, lon;       // Coordinated obtained from CPR encoded data
 	uint8_t       signal_source;  // Источник сигнала
-	unsigned char pSignal
-	
-	
+	unsigned char pSignal;        // Уровень сигнала 
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF
 };
 #pragma pack(pop)
