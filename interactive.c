@@ -29,6 +29,7 @@
 //
 
 #include "dump1090.h"
+#include <termios.h>
 //
 // ============================= Utility functions ==========================
 //
@@ -517,6 +518,48 @@ void interactiveShowData(void) {
                     printf("%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
                     a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
                     strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+					
+					
+                    int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
+                    struct termios tty;
+
+                    if (tcgetattr(serial_port, &tty) != 0)
+                    {
+                       printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
+                    }
+                    // настройки порта 
+                    tty.c_cflag &= ~PARENB;
+                    tty.c_cflag &= ~CSTOPB;
+                    tty.c_cflag &= ~CSIZE;
+                    tty.c_cflag |= CS8;
+                    tty.c_cflag &= ~CRTSCTS;
+                    tty.c_cflag |= CREAD | CLOCAL;
+
+                    tty.c_lflag &= ~ICANON;
+                    tty.c_lflag &= ~ECHO;
+                    tty.c_lflag &= ~ECHOE;
+                    tty.c_lflag &= ~ECHONL;
+                    tty.c_lflag &= ~ISIG;
+                    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+                    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
+
+                    tty.c_oflag &= ~OPOST;
+                    tty.c_oflag &= ~ONLCR;
+
+                    tty.c_cc[VTIME] = 10;
+                    tty.c_cc[VMIN] = 0;
+
+                    cfsetispeed(&tty, B115200);
+                    cfsetospeed(&tty, B115200);
+
+                    if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
+                    {
+                       printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+                    }
+	                
+					//write(serial_port, Modes.rawOut, Modes.rawOutUsed);
+	                close(serial_port);
+				
                 }
                 count++;
             }
