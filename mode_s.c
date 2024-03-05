@@ -991,9 +991,11 @@ void decodeModesMessage(struct modesMessage *mm, unsigned char *msg) {
            // Presumably airborne if we get an Airborne Velocity Message
             mm->bFlags |= MODES_ACFLAGS_AOG_VALID; 
 
-            if ( (mesub >= 1) && (mesub <= 4) ) {
+            if ( (mesub >= 1) && (mesub <= 4) ) 
+			{
                 int vert_rate = ((msg[8] & 0x07) << 6) | (msg[9] >> 2);
-                if (vert_rate) {
+                if (vert_rate) 
+				{
                     --vert_rate;
                     if (msg[8] & 0x08) 
                       {vert_rate = 0 - vert_rate;}
@@ -1027,7 +1029,8 @@ void decodeModesMessage(struct modesMessage *mm, unsigned char *msg) {
                     mm->ns_velocity = ns_vel;
                 }
 
-                if (ew_raw && ns_raw) {
+                if (ew_raw && ns_raw) 
+				{
                     // Compute velocity and angle from the two speed components
                     mm->bFlags |= (MODES_ACFLAGS_SPEED_VALID | MODES_ACFLAGS_HEADING_VALID | MODES_ACFLAGS_NSEWSPD_VALID);
                     mm->velocity = (int) sqrt((ns_vel * ns_vel) + (ew_vel * ew_vel));

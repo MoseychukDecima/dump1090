@@ -487,7 +487,9 @@ void interactiveShowData(void) {
                     printf("%06x %-8s %-4s         %-3s %-3s %4s        %-6d  %-2d\n", 
                     a->addr, a->flight, strFl, strGs, strTt, strSquawk, msgs, (int)(now - a->seen));
 
-                } else {                         // Dump1090 display mode
+                }
+				else 
+				{                         // Dump1090 display mode
                     char strMode[5]               = "    ";
                     char strLat[8]                = " ";
                     char strLon[9]                = " ";
@@ -517,6 +519,52 @@ void interactiveShowData(void) {
                     printf("%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
                     a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
                     strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+					
+					char interPacket[128] = " ";
+					snprintf(interPacket, "%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
+                    a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
+                    strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+					
+					 // int serial_port = open("/dev/ttyAMA0", O_RDWR);
+                    int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
+                    struct termios tty;
+
+                    if (tcgetattr(serial_port, &tty) != 0)
+                    {
+                      printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
+                    }
+                    /* настройки порта */
+                    tty.c_cflag &= ~PARENB;
+                    tty.c_cflag &= ~CSTOPB;
+                    tty.c_cflag &= ~CSIZE;
+                    tty.c_cflag |= CS8;
+                    tty.c_cflag &= ~CRTSCTS;
+                    tty.c_cflag |= CREAD | CLOCAL;
+
+                    tty.c_lflag &= ~ICANON;
+                    tty.c_lflag &= ~ECHO;
+                    tty.c_lflag &= ~ECHOE;
+                    tty.c_lflag &= ~ECHONL;
+                    tty.c_lflag &= ~ISIG;
+                    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+                    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
+
+                    tty.c_oflag &= ~OPOST;
+                    tty.c_oflag &= ~ONLCR;
+
+                    tty.c_cc[VTIME] = 10;
+                    tty.c_cc[VMIN] = 0;
+
+                    cfsetispeed(&tty, B115200);
+                    cfsetospeed(&tty, B115200);
+
+                   if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
+                   {
+                      printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+                   }
+				   write(serial_port, interPacket, strlen(interPacket));
+	               close(serial_port);
+				   
                 }
                 count++;
             }
