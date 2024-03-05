@@ -591,6 +591,7 @@ void interactiveShowData(void) {
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
+					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
 										
 					write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					
