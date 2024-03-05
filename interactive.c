@@ -561,7 +561,7 @@ void interactiveShowData(void) {
 					memset(&sendBuf,0, sizeof(sendBuf));
 
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
-					sendBuf.addr = a>addr;
+					sendBuf.addr = a->addr;
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.speed = speed;
 					sendBuf.altitude = altitude;
@@ -571,7 +571,7 @@ void interactiveShowData(void) {
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					
-					write(serial_port, sendBuf, sizeof(sendBuf));
+					write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					
 					
 					//char buff[1024] = {0};
