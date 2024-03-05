@@ -269,7 +269,7 @@ void modesSendRawOutput(struct modesMessage *mm)
     int j;
     unsigned char * pTimeStamp;
 	
-  
+  /*
     int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
     struct termios tty;
 
@@ -306,7 +306,7 @@ void modesSendRawOutput(struct modesMessage *mm)
     {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
     }
-
+*/
 
 
     if (Modes.mlat && mm->timestampMsg) 
@@ -333,7 +333,7 @@ void modesSendRawOutput(struct modesMessage *mm)
     Modes.rawOutUsed += ((msgLen*2) + 3);
 	
 	//write(serial_port, Modes.rawOut, Modes.rawOutUsed);
-	close(serial_port);
+	//close(serial_port);
 	
     if (Modes.rawOutUsed >= Modes.net_output_raw_size)
     {
