@@ -523,15 +523,15 @@ void interactiveShowData(void) {
 					
 					
 					
-					char interPacket[256] = " ";
-					snprintf(interPacket, "%d : %d \n", (char)altitude, (char)speed);
+					//char interPacket[256] = " ";
+					//snprintf(interPacket, "%d : %d \n", (char)altitude, (char)speed);
 					
 					//snprintf(interPacket, "%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
                     //a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
                     //strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
 					
 					
-					 // int serial_port = open("/dev/ttyAMA0", O_RDWR);
+					/*
                     int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
                     struct termios tty;
 
@@ -539,7 +539,7 @@ void interactiveShowData(void) {
                     {
                       printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
                     }
-                    /* настройки порта */
+                    // настройки порта 
                     tty.c_cflag &= ~PARENB;
                     tty.c_cflag &= ~CSTOPB;
                     tty.c_cflag &= ~CSIZE;
@@ -570,10 +570,8 @@ void interactiveShowData(void) {
                    }
 				  
 				  write(serial_port, interPacket, strlen(interPacket));
-			  
-				  
-	               close(serial_port);
-				   
+                  close(serial_port);
+				   */
                 }
                 count++;
             }
