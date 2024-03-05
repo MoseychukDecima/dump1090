@@ -522,9 +522,12 @@ void interactiveShowData(void) {
                     strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
 					
 					char interPacket[128] = " ";
-					snprintf(interPacket, "%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
-                    a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
-                    strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+					snprintf(interPacket, "%06X  %-4s  %-4s  %-8s \n", a->addr, strMode, strSquawk, a->flight);
+					
+					//snprintf(interPacket, "%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
+                    //a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
+                    //strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+					
 					
 					 // int serial_port = open("/dev/ttyAMA0", O_RDWR);
                     int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
