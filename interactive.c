@@ -521,8 +521,8 @@ void interactiveShowData(void) {
                     a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
                     strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
 					
-					char interPacket[128] = " ";
-					snprintf(interPacket, "%06X  %-4s  %-4s  %-8s \n", a->addr, strMode, strSquawk, a->flight);
+					//char interPacket[128] = " ";
+					//snprintf(interPacket, "%06X  %-4s  %-4s  %-8s \n", a->addr, strMode, strSquawk, a->flight);
 					
 					//snprintf(interPacket, "%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
                     //a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
@@ -566,7 +566,17 @@ void interactiveShowData(void) {
                    {
                       printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                    }
-				   write(serial_port, interPacket, strlen(interPacket));
+				  // write(serial_port, interPacket, strlen(interPacket));
+				  write(serial_port, a->addr, strlen(a->addr));
+				  write(serial_port, ":", 1);
+				  write(serial_port, a->flight, strlen(a->flight));
+				  write(serial_port, ":", 1);
+				  write(serial_port, strFl, strlen(strFl));
+				  write(serial_port, ":", 1);
+				  write(serial_port, strGs, strlen(strGs));
+				  write(serial_port, ":", 1);
+				  
+				  
 	               close(serial_port);
 				   
                 }
