@@ -524,7 +524,7 @@ void interactiveShowData(void) {
 					
 					
 					char interPacket[256] = " ";
-					snprintf(interPacket, "%d : %d \n", altitude, speed);
+					snprintf(interPacket, "%d : %d \n", (char)altitude, (char)speed);
 					
 					//snprintf(interPacket, "%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
                     //a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
