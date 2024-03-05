@@ -590,7 +590,6 @@ void interactiveShowData(void) {
 					sendBuf.timestampLatLon = a->timestampLatLon;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
-					memcpy(sendBuf.signalAverage,a->signalAverage, sizeof(sendBuf.signalAverage));
 					sendBuf.signal_source = 1;  // Источник сигнала
 										
 					write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
