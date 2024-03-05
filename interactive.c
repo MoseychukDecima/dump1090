@@ -557,13 +557,29 @@ void interactiveShowData(void) {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 	                
-					char buff[1024] = {0};
-					sprintf(buff, "Hello %06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
-                    a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
-                    strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+					struct ToArduino sendBuf;
+					memset(&sendBuf,0, sizeof(sendBuf));
+
+					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					sendBuf.addr = a>addr;
+					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
+					sendBuf.speed = speed;
+					sendBuf.altitude = altitude;
+					sendBuf.track = a->track;
+					sendBuf.vert_rate = a->vert_rate;
+					sendBuf.timestamp = a->timestamp;
+					sendBuf.lat = a->lat;
+					sendBuf.lon = a->lon;
 					
-					write(serial_port, buff, 512);
-					//write(serial_port, buff, strlen(buff)+1);
+					write(serial_port, sendBuf, sizeof(sendBuf));
+					
+					
+					//char buff[1024] = {0};
+					//sprintf(buff, "Hello %06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
+                    //a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
+                    //strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+					
+					//write(serial_port, buff, 512);
 					
 					//write(serial_port, Modes.rawOut, Modes.rawOutUsed);
 	                close(serial_port);

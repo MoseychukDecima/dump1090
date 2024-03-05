@@ -195,6 +195,23 @@ struct client {
     char   buf[MODES_CLIENT_BUF_SIZE+1]; // Read buffer
 };
 
+#pragma pack(push,1)
+struct ToArduino
+{
+    uint32_t      addr;           // ICAO address
+    char          flight[16];     // Flight number	
+    int           altitude;       // Altitude
+    int           speed;          // Velocity
+    int           track;          // Angle of flight
+    int           vert_rate;      // Vertical rate.
+    uint64_t      timestamp;      // Timestamp at which the last packet was received
+    double        lat, lon;       // Coordinated obtained from CPR encoded data
+	
+	
+	char endOfPacket[3]; // 0xFF 0xFF 0xFF
+};
+#pragma pack(pop)
+
 // Structure used to describe an aircraft in iteractive mode
 struct aircraft {
     uint32_t      addr;           // ICAO address
