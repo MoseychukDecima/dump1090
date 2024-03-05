@@ -200,12 +200,18 @@ struct ToArduino
 {
     uint32_t      addr;           // ICAO address
     char          flight[16];     // Flight number	
+	unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
     int           vert_rate;      // Vertical rate.
-    uint64_t      timestamp;      // Timestamp at which the last packet was received
+    time_t        seen;           // Time at which the last packet was received
+    time_t        seenLatLon;     // Time at which the last lat long was calculated
+	uint64_t      timestamp;      // Timestamp at which the last packet was received
+	uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
     double        lat, lon;       // Coordinated obtained from CPR encoded data
+	uint8_t       signal_source;  // Источник сигнала
+	unsigned char pSignal
 	
 	
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF
