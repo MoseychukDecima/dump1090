@@ -29,6 +29,7 @@
 //
 
 #include "dump1090.h"
+#include <termios.h>
 //
 // ============================= Utility functions ==========================
 //
