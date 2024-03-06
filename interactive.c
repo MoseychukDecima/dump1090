@@ -586,7 +586,7 @@ void interactiveShowData(void) {
 					sendBuf.speed = speed* 1.852;
 					sendBuf.track = a->track;
 					sendBuf.vert_rate = a->vert_rate;
-					sendBuf.timestamp = a->timestamp;
+					sendBuf.timestamp = a->timestamp/1000/60;
 					sendBuf.timestampLatLon = a->timestampLatLon;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
