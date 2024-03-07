@@ -463,10 +463,10 @@ void interactiveShowData(void) {
                 char strGs[5]     = " ";
 
                 // Convert units to metric if --metric was specified
-                if (Modes.metric) {
+                //if (Modes.metric) {
                     altitude = (int) (altitude / 3.2828);
                     speed    = (int) (speed    * 1.852);
-                }
+                //}
 
                 if (a->bFlags & MODES_ACFLAGS_SQUAWK_VALID) {
                     snprintf(strSquawk,5,"%04x", a->modeA);}
@@ -516,7 +516,7 @@ void interactiveShowData(void) {
                     }
 
                     printf("%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
-                    a->addr, strMode, strSquawk, a->flight, strFl/3.2828, strGs* 1.852, strTt,
+                    a->addr, strMode, strSquawk, a->flight, strFl, strGs* 1.852, strTt,
                     strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
 					
 					
