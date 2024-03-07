@@ -516,7 +516,7 @@ void interactiveShowData(void) {
                     }
 
                     printf("%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
-                    a->addr, strMode, strSquawk, a->flight, strFl, strGs* 1.852, strTt,
+                    a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
                     strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
 					
 					
