@@ -565,8 +565,8 @@ void interactiveShowData(void) {
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					sendBuf.addr = a->addr;
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
-					sendBuf.altitude = altitude/ 3.2828;
-					sendBuf.speed = speed* 1.852;
+					sendBuf.altitude = altitude;
+					sendBuf.speed = speed;
 					sendBuf.track = a->track;
 					sendBuf.vert_rate = a->vert_rate;
 					sendBuf.timestamp = a->timestamp/1000/60;
