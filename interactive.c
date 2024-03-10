@@ -590,8 +590,11 @@ void interactiveShowData(void) {
 					sendBuf.signal_source = 1;  // Источник сигнала
 					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
 					sendBuf.pSignal	= signalAverage;
-					write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					
+					if(sendBuf.seen < 20)
+					{
+					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					}
 					
 					//char buff[1024] = {0};
 					//sprintf(buff, "Hello %06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
@@ -600,7 +603,6 @@ void interactiveShowData(void) {
 					
 					//write(serial_port, buff, 512);
 					
-					//write(serial_port, Modes.rawOut, Modes.rawOutUsed);
 	                close(serial_port);
 				
                 }
