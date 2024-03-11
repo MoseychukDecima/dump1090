@@ -578,13 +578,13 @@ void interactiveShowData(void) {
 
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					sendBuf.addr = a->addr;
-					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
+					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
-					sendBuf.vert_rate = a->vert_rate;
-					sendBuf.timestamp = a->timestamp/1000/60;
-					sendBuf.timestampLatLon = a->timestampLatLon;
+					//sendBuf.vert_rate = a->vert_rate;
+					//sendBuf.timestamp = a->timestamp/1000/60;
+					//sendBuf.timestampLatLon = a->timestampLatLon;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
