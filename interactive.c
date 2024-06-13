@@ -457,19 +457,21 @@ void interactiveShowData(void) {
               || (((flags & (MODEAC_MSG_MODES_HIT | MODEAC_MSG_MODEC_OLD )) == 0                    ) && (msgs > 127) ) 
               ) {
                 int altitude = a->altitude, speed = a->speed;
-                char strSquawk[5] = " ";
+                char strSquawk[4] = " ";
                 char strFl[6]     = " ";
                 char strTt[5]     = " ";
                 char strGs[5]     = " ";
 
                 // Преобразовать единицы в метрические, если указано --metric
                 //if (Modes.metric) {
-                    altitude = (int) (altitude / 3.2828);
-                    speed    = (int) (speed    * 1.852);
+                   // altitude = (int) (altitude / 3.2828);
+                   // speed    = (int) (speed    * 1.852);
                 //}
+				
+				
 
                 if (a->bFlags & MODES_ACFLAGS_SQUAWK_VALID) {
-                    snprintf(strSquawk,5,"%04x", a->modeA);}
+                    snprintf(strSquawk,4,"%04x", a->modeA);}
 
                 if (a->bFlags & MODES_ACFLAGS_SPEED_VALID) {
                     snprintf (strGs, 5,"%3d", speed);}
