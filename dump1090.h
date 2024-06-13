@@ -200,12 +200,12 @@ struct client {
 struct ToFlyRf
 {
     uint32_t      addr;           // ICAO address
-   // char          flight[16];     // Flight number	
+    char          flight[16];     // Flight number	
 	//unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
-    //int           vert_rate;      // Vertical rate.
+    int           vert_rate;      // Vertical rate.
     // time_t        seenLatLon;     // Time at which the last lat long was calculated
 	//uint64_t      timestamp;      // Timestamp at which the last packet was received
 	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
