@@ -557,65 +557,66 @@ void interactiveShowData(void) {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 	                /*
-	                  uint32_t      addr;           // ICAO address
-                      char          flight[16];     // Flight number	
-	                  unsigned char signalLevel[8]; // Last 8 Signal Amplitudes
-                      int           altitude;       // Altitude
-                      int           speed;          // Velocity
-                      int           track;          // Angle of flight
-                      int           vert_rate;      // Vertical rate.
-                      time_t        seen;           // Время получения последнего пакета
-                      time_t        seenLatLon;     // Время, когда была рассчитана последняя долгота lat lon
-                      uint64_t      timestamp;      // Временная метка, когда был получен последний пакет
-                      uint64_t      timestampLatLon;// Временная метка, в которую была рассчитана последняя долгота lat lon
-                      long          messages;       // Количество полученных сообщений в режиме S
-                      int           modeA;          // Squawk
-                      int           modeC;          // Altitude
-                      long          modeAcount;     // Mode A Squawk hit Count
-                      long          modeCcount;     // Mode C Altitude hit Count
-                      int           modeACflags;    // Флаги для распознавания режима A/C
-	                  // Закодированная широта и долгота, извлеченные из нечетных и четных сообщений, закодированных CPR
-                      int           odd_cprlat;
-                      int           odd_cprlon;
-                      int           even_cprlat;
-                      int           even_cprlon;
-                      uint64_t      odd_cprtime;
-                      uint64_t      even_cprtime;
-                      double        lat;
-	                  double        lon;            // Coordinated obtained from CPR encoded data
-	                  uint8_t       signal_source;  // Источник сигнала
-	                  unsigned int  pSignal;        // Уровень сигнала 
-	                  char endOfPacket[3]; // 0xFF 0xFF 0xFF
+	                    uint32_t      addr;           // ICAO address
+                        char          flight[16];     // Flight number	
+	                    //unsigned char signalLevel[8]; // Last 8 Signal Amplitudes
+                        int           altitude;       // Altitude
+                        int           speed;          // Velocity
+                        int           track;          // Angle of flight
+                        int           vert_rate;      // Vertical rate.
+                        time_t        seen;           // Время получения последнего пакета
+                        // time_t        seenLatLon;     // Время, когда была рассчитана последняя долгота lat lon
+                        // uint64_t      timestamp;      // Временная метка, когда был получен последний пакет
+                        //uint64_t      timestampLatLon;// Временная метка, в которую была рассчитана последняя долгота lat lon
+                        // long          messages;       // Количество полученных сообщений в режиме S
+                        int           modeA;          // Squawk
+                        int           modeC;          // Altitude
+                        long          modeAcount;     // Mode A Squawk hit Count
+                        long          modeCcount;     // Mode C Altitude hit Count
+                        int           modeACflags;    // Flags for mode A/C recognition
+	                    // Закодированная широта и долгота, извлеченные из нечетных и четных сообщений, закодированных CPR
+                        // int           odd_cprlat;
+                        //int           odd_cprlon;
+                        //int           even_cprlat;
+                        //int           even_cprlon;
+                        //uint64_t      odd_cprtime;
+                        //uint64_t      even_cprtime;
+                        double        lat;
+	                    double        lon;            // Coordinated obtained from CPR encoded data
+	                    uint8_t       signal_source;  // Источник сигнала
+	                    //unsigned int  pSignal;        // Уровень сигнала 
+	                    char endOfPacket[3]; // 0xFF 0xFF 0xFF
 	
 					*/
 					struct ToFlyRf sendBuf;
 					memset(&sendBuf,0, sizeof(sendBuf));
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					
 					sendBuf.addr = a->addr;
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
-					memcpy(sendBuf.signalLevel,a->signalLevel, sizeof(sendBuf.signalLevel));
+					//memcpy(sendBuf.signalLevel,a->signalLevel, sizeof(sendBuf.signalLevel));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
 					sendBuf.vert_rate = a->vert_rate;
 					sendBuf.seen = (int)(now - a->seen);             // Время получения последнего пакета
-					sendBuf.seenLatLon = (int)(now - a->seenLatLon); //  Время, когда была рассчитана последняя долгота lat lon
-					sendBuf.timestamp = a->timestamp/1000/60;
-					sendBuf.timestampLatLon = a->timestampLatLon;
-					sendBuf.messages = a->messages;
+					//sendBuf.seenLatLon = (int)(now - a->seenLatLon); //  Время, когда была рассчитана последняя долгота lat lon
+					//sendBuf.timestamp = a->timestamp/1000/60;
+					//sendBuf.timestampLatLon = a->timestampLatLon;
+					//sendBuf.messages = a->messages;
 					sendBuf.modeA = a->modeA;                        // Squawk
 					sendBuf.modeC = a->modeC;                        // Altitude
 					sendBuf.modeAcount = a->modeAcount;              // Mode A Squawk hit Count
 					sendBuf.modeCcount = a->modeCcount;              // Mode C Altitude hit Count
 					sendBuf.modeACflags = a->modeACflags;            // Флаги для распознавания режима A/C
-					sendBuf.odd_cprlat = a->odd_cprlat;              
-					sendBuf.odd_cprlon = a->odd_cprlon;     
-                    sendBuf.odd_cprtime = a->odd_cprtime;  
-                    sendBuf.even_cprtime = a->even_cprtime;  
+					//sendBuf.odd_cprlat = a->odd_cprlat;              
+					//sendBuf.odd_cprlon = a->odd_cprlon;     
+                    //sendBuf.odd_cprtime = a->odd_cprtime;  
+                   // sendBuf.even_cprtime = a->even_cprtime;  
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
-					sendBuf.pSignal	= signalAverage;
+					//sendBuf.pSignal	= signalAverage;
 					
 					if(sendBuf.seen < 20)
 					{
