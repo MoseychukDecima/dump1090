@@ -209,7 +209,7 @@ struct ToFlyRf
 	uint32_t      addr;            // ICAO address
 	char          strMode[4];      // S
 	char          strSquawk[4];    // Sqwk
-	char          flight[8];       // Flight number	
+	//char          flight[8];       // Flight number	
 	char          strFl[5];        // Alt
 	char          strGs[3] ;       // Speed
 	char          strTt[3];        // Hdg

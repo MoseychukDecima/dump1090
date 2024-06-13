@@ -602,7 +602,7 @@ void interactiveShowData(void) {
 					sendBuf.addr = a->addr;					
 					memcpy(sendBuf.strMode, strMode,sizeof(sendBuf.strMode));
 					memcpy(sendBuf.strSquawk, strSquawk,sizeof(sendBuf.strSquawk));
-					memcpy(sendBuf.flight, a->flight,sizeof(sendBuf.flight));
+					//memcpy(sendBuf.flight, a->flight,sizeof(sendBuf.flight));
 					memcpy(sendBuf.strFl, strFl,sizeof(sendBuf.strFl));
 					memcpy(sendBuf.strGs, strGs,sizeof(sendBuf.strGs));
 					memcpy(sendBuf.strTt, strTt,sizeof(sendBuf.strTt));
