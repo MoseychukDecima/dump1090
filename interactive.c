@@ -604,11 +604,11 @@ void interactiveShowData(void) {
 					//sendBuf.timestamp = a->timestamp/1000/60;
 					//sendBuf.timestampLatLon = a->timestampLatLon;
 					//sendBuf.messages = a->messages;
-					sendBuf.modeA = a->modeA;                        // Squawk
-					sendBuf.modeC = a->modeC;                        // Altitude
-					sendBuf.modeAcount = a->modeAcount;              // Mode A Squawk hit Count
-					sendBuf.modeCcount = a->modeCcount;              // Mode C Altitude hit Count
-					sendBuf.modeACflags = a->modeACflags;            // Флаги для распознавания режима A/C
+					//sendBuf.modeA = a->modeA;                        // Squawk
+					//sendBuf.modeC = a->modeC;                        // Altitude
+					//sendBuf.modeAcount = a->modeAcount;              // Mode A Squawk hit Count
+					//sendBuf.modeCcount = a->modeCcount;              // Mode C Altitude hit Count
+					//sendBuf.modeACflags = a->modeACflags;            // Флаги для распознавания режима A/C
 					//sendBuf.odd_cprlat = a->odd_cprlat;              
 					//sendBuf.odd_cprlon = a->odd_cprlon;     
                     //sendBuf.odd_cprtime = a->odd_cprtime;  
@@ -616,7 +616,7 @@ void interactiveShowData(void) {
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
-					//sendBuf.pSignal	= signalAverage;
+					sendBuf.pSignal	= signalAverage;
 					
 					if(sendBuf.seen < 20)
 					{
