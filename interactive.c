@@ -590,32 +590,20 @@ void interactiveShowData(void) {
 					*/
 					struct ToFlyRf sendBuf;
 					memset(&sendBuf,0, sizeof(sendBuf));
-					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					
+					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					sendBuf.addr = a->addr;
-					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
-					//memcpy(sendBuf.signalLevel,a->signalLevel, sizeof(sendBuf.signalLevel));
+					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
-					sendBuf.vert_rate = a->vert_rate;
-					sendBuf.seen = (int)(now - a->seen);             // Время получения последнего пакета
-					//sendBuf.seenLatLon = (int)(now - a->seenLatLon); //  Время, когда была рассчитана последняя долгота lat lon
+					//sendBuf.vert_rate = a->vert_rate;
 					//sendBuf.timestamp = a->timestamp/1000/60;
 					//sendBuf.timestampLatLon = a->timestampLatLon;
-					//sendBuf.messages = a->messages;
-					//sendBuf.modeA = a->modeA;                        // Squawk
-					//sendBuf.modeC = a->modeC;                        // Altitude
-					//sendBuf.modeAcount = a->modeAcount;              // Mode A Squawk hit Count
-					//sendBuf.modeCcount = a->modeCcount;              // Mode C Altitude hit Count
-					//sendBuf.modeACflags = a->modeACflags;            // Флаги для распознавания режима A/C
-					//sendBuf.odd_cprlat = a->odd_cprlat;              
-					//sendBuf.odd_cprlon = a->odd_cprlon;     
-                    //sendBuf.odd_cprtime = a->odd_cprtime;  
-                   // sendBuf.even_cprtime = a->even_cprtime;  
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
+					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
 					sendBuf.pSignal	= signalAverage;
 					
 					if(sendBuf.seen < 20) // Ограничил время ожидания приема пакетов.
