@@ -600,12 +600,12 @@ void interactiveShowData(void) {
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					
 					sendBuf.addr = a->addr;					
-					memcpy(sendBuf.strMode, strMode,sizeof(sendBuf.strMode));
-					memcpy(sendBuf.strSquawk, strSquawk,sizeof(sendBuf.strSquawk));
-					//memcpy(sendBuf.flight, a->flight,sizeof(sendBuf.flight));
-					memcpy(sendBuf.strFl, strFl,sizeof(sendBuf.strFl));
-					memcpy(sendBuf.strGs, strGs,sizeof(sendBuf.strGs));
-					memcpy(sendBuf.strTt, strTt,sizeof(sendBuf.strTt));
+					memcpy(sendBuf.mode, strMode,sizeof(sendBuf.mode));
+					memcpy(sendBuf.Squawk, strSquawk,sizeof(sendBuf.Squawk));
+					//memcpy(sendBuf.strflight, a->flight,sizeof(sendBuf.strflight));
+					memcpy(sendBuf.altitude, strFl,sizeof(sendBuf.altitude));
+					memcpy(sendBuf.speed, strGs,sizeof(sendBuf.speed));
+					memcpy(sendBuf.course, strTt,sizeof(sendBuf.course));
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
