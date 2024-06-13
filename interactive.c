@@ -464,8 +464,8 @@ void interactiveShowData(void) {
 
                 // Преобразовать единицы в метрические, если указано --metric
                 //if (Modes.metric) {
-                   // altitude = (int) (altitude / 3.2828);
-                   // speed    = (int) (speed    * 1.852);
+                    altitude = (int) (altitude / 3.2828);
+                    speed    = (int) (speed    * 1.852);
                 //}
 				
 				
@@ -603,7 +603,8 @@ void interactiveShowData(void) {
 					
 					sendBuf.addr = a->addr;					
 					//memcpy(sendBuf.mode, strMode,sizeof(sendBuf.mode));
-					memcpy(sendBuf.Squawk, strSquawk,4); // Squawk 
+					//memcpy(sendBuf.Squawk, strSquawk,4); // Squawk 
+					sendBuf.Squawk = a->modeA;
 					//memcpy(sendBuf.strflight, a->flight,sizeof(sendBuf.strflight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
