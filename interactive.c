@@ -589,17 +589,15 @@ void interactiveShowData(void) {
 	
 					*/
 					struct ToFlyRf sendBuf;
-					memset(&sendBuf,0, sizeof(sendBuf));
-					
+					memset(&sendBuf,0, sizeof(sendBuf));            // Очистить буфер
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					
 					sendBuf.addr = a->addr;
 					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
 					sendBuf.vert_rate = a->vert_rate;
-					//sendBuf.timestamp = a->timestamp/1000/60;
-					//sendBuf.timestampLatLon = a->timestampLatLon;
 					sendBuf.messages = a->messages;
 					sendBuf.modeA = a->modeA;
 					sendBuf.modeC = a->modeC;

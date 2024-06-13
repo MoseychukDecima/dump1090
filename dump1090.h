@@ -201,14 +201,10 @@ struct ToFlyRf
 {
     uint32_t      addr;           // ICAO address
     //char          flight[16];     // Flight number	
-	//unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
     int           vert_rate;      // Vertical rate.
-    // time_t        seenLatLon;     // Time at which the last lat long was calculated
-	//uint64_t      timestamp;      // Timestamp at which the last packet was received
-	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
 	long          messages;       // Number of Mode S messages received
     int           modeA;          // Squawk
     int           modeC;          // Altitude
@@ -216,7 +212,7 @@ struct ToFlyRf
     long          modeCcount;     // Mode C Altitude hit Count
     int           modeACflags;    // Flags for mode A/C recognition
     double        lat;
-	double        lon;       // Coordinated obtained from CPR encoded data
+	double        lon;            // Coordinated obtained from CPR encoded data
 	uint8_t       signal_source;  // Источник сигнала
 	time_t        seen;           // Time at which the last packet was received
 	unsigned int  pSignal;        // Уровень сигнала 
