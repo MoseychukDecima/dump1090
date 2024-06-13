@@ -207,12 +207,13 @@ struct ToFlyRf
 	*/
 	
 	uint32_t      addr;            // ICAO address
-	char          mode[4];      // S
+	//char          mode[4];      // S
 	char          Squawk[4];    // Sqwk
 	//char          strflight[8];       // Flight number	
-	char          altitude[5];        // Alt
-	char          speed[3] ;       // Speed
-	char          course[3];        // Hdg
+	int           altitude;        // Altitude
+	int           speed;           // Velocity
+    int           track;           // Angle of flight
+    int           vert_rate;       // Vertical rate.
 	double        lat;             // Lat
 	double        lon;             // Coordinated obtained from CPR encoded data
 	uint8_t       signal_source;   // Источник сигнала
