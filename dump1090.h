@@ -199,6 +199,28 @@ struct client {
 // Структура, используемая для описания самолета в интерактивном режиме
 struct ToFlyRf
 {
+	/*
+	  printf("%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
+      a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
+      strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
+	
+	*/
+	
+	uint32_t      addr;            // ICAO address
+	char          strMode[4];      // S
+	char          strSquawk[4];    // Sqwk
+	char          flight[8];       // Flight number	
+	char          strFl[5];        // Alt
+	char          strGs[3] ;       // Speed
+	char          strTt[3];        // Hdg
+	double        lat;             // Lat
+	double        lon;             // Coordinated obtained from CPR encoded data
+	uint8_t       signal_source;   // Источник сигнала
+	time_t        seen;            // Time at which the last packet was received
+	unsigned int  pSignal;         // Уровень сигнала 
+	char          endOfPacket[3];  // 0xFF 0xFF 0xFF
+	
+	/*
     uint32_t      addr;           // ICAO address
     //char          flight[16];     // Flight number	
     int           altitude;       // Altitude
@@ -217,6 +239,7 @@ struct ToFlyRf
 	time_t        seen;           // Time at which the last packet was received
 	unsigned int  pSignal;        // Уровень сигнала 
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF
+	*/
 };
 #pragma pack(pop)
 

@@ -462,7 +462,7 @@ void interactiveShowData(void) {
                 char strTt[5]     = " ";
                 char strGs[5]     = " ";
 
-                // Convert units to metric if --metric was specified
+                // Преобразовать единицы в метрические, если указано --metric
                 //if (Modes.metric) {
                     altitude = (int) (altitude / 3.2828);
                     speed    = (int) (speed    * 1.852);
@@ -558,58 +558,79 @@ void interactiveShowData(void) {
                     }
 	                /*
 	                    uint32_t      addr;           // ICAO address
-                        char          flight[16];     // Flight number	
-	                    //unsigned char signalLevel[8]; // Last 8 Signal Amplitudes
+                        //char          flight[16];     // Flight number	
                         int           altitude;       // Altitude
                         int           speed;          // Velocity
                         int           track;          // Angle of flight
                         int           vert_rate;      // Vertical rate.
-                        time_t        seen;           // Время получения последнего пакета
-                        // time_t        seenLatLon;     // Время, когда была рассчитана последняя долгота lat lon
-                        // uint64_t      timestamp;      // Временная метка, когда был получен последний пакет
-                        //uint64_t      timestampLatLon;// Временная метка, в которую была рассчитана последняя долгота lat lon
-                        // long          messages;       // Количество полученных сообщений в режиме S
+	                    long          messages;       // Number of Mode S messages received
                         int           modeA;          // Squawk
                         int           modeC;          // Altitude
                         long          modeAcount;     // Mode A Squawk hit Count
                         long          modeCcount;     // Mode C Altitude hit Count
                         int           modeACflags;    // Flags for mode A/C recognition
-	                    // Закодированная широта и долгота, извлеченные из нечетных и четных сообщений, закодированных CPR
-                        // int           odd_cprlat;
-                        //int           odd_cprlon;
-                        //int           even_cprlat;
-                        //int           even_cprlon;
-                        //uint64_t      odd_cprtime;
-                        //uint64_t      even_cprtime;
                         double        lat;
 	                    double        lon;            // Coordinated obtained from CPR encoded data
 	                    uint8_t       signal_source;  // Источник сигнала
-	                    //unsigned int  pSignal;        // Уровень сигнала 
+	                    time_t        seen;           // Time at which the last packet was received
+	                    unsigned int  pSignal;        // Уровень сигнала 
 	                    char endOfPacket[3]; // 0xFF 0xFF 0xFF
+						
+						uint32_t      addr;            // ICAO address
+	                    char          strMode[4];      // S
+	                    char          strSquawk[4];    // Sqwk
+	                    char          flight[8];       // Flight number	
+	                    char          strFl[5];        // Alt
+	                    char          strGs[3] ;       // Speed
+	                    char          strTt[3];        // Hdg
+	                    double        lat;             // Lat
+	                    double        lon;             // Coordinated obtained from CPR encoded data
+	                    uint8_t       signal_source;   // Источник сигнала
+	                    time_t        seen;            // Time at which the last packet was received
+	                    unsigned int  pSignal;         // Уровень сигнала 
+	                    char          endOfPacket[3];  // 0xFF 0xFF 0xFF
+						
+						
+						
+						
 	
 					*/
 					struct ToFlyRf sendBuf;
 					memset(&sendBuf,0, sizeof(sendBuf));            // Очистить буфер
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					
+					sendBuf.addr = a->addr;					
+					memcpy(sendBuf.strMode, strMode,sizeof(sendBuf.strMode));
+					memcpy(sendBuf.strSquawk, strSquawk,sizeof(sendBuf.strSquawk));
+					memcpy(sendBuf.flight, flight,sizeof(sendBuf.flight));
+					memcpy(sendBuf.strFl, strFl,sizeof(sendBuf.strFl));
+					memcpy(sendBuf.strGs, strGs,sizeof(sendBuf.strGs));
+					memcpy(sendBuf.strTt, strTt,sizeof(sendBuf.strTt));
+					sendBuf.lat = a->lat;
+					sendBuf.lon = a->lon;
+					sendBuf.signal_source = 1;  // Источник сигнала
+					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
+					sendBuf.pSignal	= signalAverage;	
+					
+					/*
 					sendBuf.addr = a->addr;
 					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
 					sendBuf.vert_rate = a->vert_rate;
-					sendBuf.messages = a->messages;
+					sendBuf.messages = msgs;
 					sendBuf.modeA = a->modeA;
 					sendBuf.modeC = a->modeC;
 					sendBuf.modeAcount = a->modeAcount;
 					sendBuf.modeCcount = a->modeCcount;
-					sendBuf.modeACflags = a->modeACflags;
+					sendBuf.modeACflags = flags;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
 					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
 					sendBuf.pSignal	= signalAverage;
-					
+					*/
 					if(sendBuf.seen < 20) // Ограничил время ожидания приема пакетов.
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
