@@ -603,8 +603,7 @@ void interactiveShowData(void) {
 					
 					sendBuf.addr = a->addr;					
 					//memcpy(sendBuf.mode, strMode,sizeof(sendBuf.mode));
-					//memcpy(sendBuf.Squawk, strSquawk,4); // Squawk 
-					sendBuf.Squawk = a->modeA;
+					memcpy(sendBuf.Squawk, strSquawk,sizeof(sendBuf.Squawk)); // Squawk 
 					//memcpy(sendBuf.strflight, a->flight,sizeof(sendBuf.strflight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
