@@ -618,7 +618,7 @@ void interactiveShowData(void) {
 					sendBuf.signal_source = 1;  // Источник сигнала
 					sendBuf.pSignal	= signalAverage;
 					
-					if(sendBuf.seen < 20)
+					if(sendBuf.seen < 20) // Ограничил время ожидания приема пакетов.
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
