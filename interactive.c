@@ -600,6 +600,12 @@ void interactiveShowData(void) {
 					sendBuf.vert_rate = a->vert_rate;
 					//sendBuf.timestamp = a->timestamp/1000/60;
 					//sendBuf.timestampLatLon = a->timestampLatLon;
+					sendBuf.messages = a->messages;
+					sendBuf.modeA = a->modeA;
+					sendBuf.modeC = a->modeC;
+					sendBuf.modeAcount = a->modeAcount;
+					sendBuf.modeCcount = a->modeCcount;
+					sendBuf.modeACflags = a->modeACflags;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
