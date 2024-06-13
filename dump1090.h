@@ -196,28 +196,42 @@ struct client {
 };
 
 #pragma pack(push,1)
-struct ToArduino
-{
+// Структура, используемая для описания самолета в интерактивном режиме
+struct ToFlyRf
+{	
     uint32_t      addr;           // ICAO address
-   // char          flight[16];     // Flight number	
-	//unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
+    char          flight[16];     // Flight number	
+	unsigned char signalLevel[8]; // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
-    //int           vert_rate;      // Vertical rate.
-    // time_t        seenLatLon;     // Time at which the last lat long was calculated
-	//uint64_t      timestamp;      // Timestamp at which the last packet was received
-	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
+    int           vert_rate;      // Vertical rate.
+    time_t        seen;           // Время получения последнего пакета
+    time_t        seenLatLon;     // Время, когда была рассчитана последняя долгота lat lon
+    uint64_t      timestamp;      // Временная метка, когда был получен последний пакет
+    uint64_t      timestampLatLon;// Временная метка, в которую была рассчитана последняя долгота lat lon
+    long          messages;       // Количество полученных сообщений в режиме S
+    int           modeA;          // Squawk
+    int           modeC;          // Altitude
+    long          modeAcount;     // Mode A Squawk hit Count
+    long          modeCcount;     // Mode C Altitude hit Count
+    int           modeACflags;    // Flags for mode A/C recognition
+	    // Закодированная широта и долгота, извлеченные из нечетных и четных сообщений, закодированных CPR
+    int           odd_cprlat;
+    int           odd_cprlon;
+    int           even_cprlat;
+    int           even_cprlon;
+    uint64_t      odd_cprtime;
+    uint64_t      even_cprtime;
     double        lat;
-	double        lon;       // Coordinated obtained from CPR encoded data
+	double        lon;            // Coordinated obtained from CPR encoded data
 	uint8_t       signal_source;  // Источник сигнала
-	time_t        seen;           // Time at which the last packet was received
 	unsigned int  pSignal;        // Уровень сигнала 
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF
 };
 #pragma pack(pop)
 
-// Structure used to describe an aircraft in iteractive mode
+// Структура, используемая для описания самолета в интерактивном режиме
 struct aircraft {
     uint32_t      addr;           // ICAO address
     char          flight[16];     // Flight number
@@ -237,7 +251,7 @@ struct aircraft {
     long          modeCcount;     // Mode C Altitude hit Count
     int           modeACflags;    // Flags for mode A/C recognition
 
-    // Encoded latitude and longitude as extracted by odd and even CPR encoded messages
+    // Закодированная широта и долгота, извлеченные из нечетных и четных сообщений, закодированных CPR
     int           odd_cprlat;
     int           odd_cprlon;
     int           even_cprlat;
