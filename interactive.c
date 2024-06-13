@@ -457,7 +457,7 @@ void interactiveShowData(void) {
               || (((flags & (MODEAC_MSG_MODES_HIT | MODEAC_MSG_MODEC_OLD )) == 0                    ) && (msgs > 127) ) 
               ) {
                 int altitude = a->altitude, speed = a->speed;
-                char strSquawk[4] = " ";
+                char strSquawk[5] = " ";
                 char strFl[6]     = " ";
                 char strTt[5]     = " ";
                 char strGs[5]     = " ";
@@ -471,7 +471,7 @@ void interactiveShowData(void) {
 				
 
                 if (a->bFlags & MODES_ACFLAGS_SQUAWK_VALID) {
-                    snprintf(strSquawk,4,"%04x", a->modeA);}
+                    snprintf(strSquawk,5,"%04x", a->modeA);}
 
                 if (a->bFlags & MODES_ACFLAGS_SPEED_VALID) {
                     snprintf (strGs, 5,"%3d", speed);}
@@ -603,7 +603,7 @@ void interactiveShowData(void) {
 					
 					sendBuf.addr = a->addr;					
 					//memcpy(sendBuf.mode, strMode,sizeof(sendBuf.mode));
-					memcpy(sendBuf.Squawk, strSquawk,sizeof(sendBuf.Squawk));
+					memcpy(sendBuf.Squawk, strSquawk,4);
 					//memcpy(sendBuf.strflight, a->flight,sizeof(sendBuf.strflight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
