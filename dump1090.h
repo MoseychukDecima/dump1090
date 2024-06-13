@@ -197,7 +197,7 @@ struct client {
 
 #pragma pack(push,1)
 // Структура, используемая для описания самолета в интерактивном режиме
-struct ToArduino
+struct ToFlyRf
 {
     uint32_t      addr;           // ICAO address
    // char          flight[16];     // Flight number	
