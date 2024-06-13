@@ -471,7 +471,7 @@ void interactiveShowData(void) {
 				
 
                 if (a->bFlags & MODES_ACFLAGS_SQUAWK_VALID) {
-                    snprintf(strSquawk,4,"%04x", a->modeA);}
+                    snprintf(strSquawk,5,"%04x", a->modeA);}
 
                 if (a->bFlags & MODES_ACFLAGS_SPEED_VALID) {
                     snprintf (strGs, 5,"%3d", speed);}
