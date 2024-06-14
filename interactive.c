@@ -462,13 +462,11 @@ void interactiveShowData(void) {
                 char strTt[5]     = " ";
                 char strGs[5]     = " ";
 
-                // Преобразовать единицы в метрические, если указано --metric
+                // Convert units to metric if --metric was specified
                 //if (Modes.metric) {
                     altitude = (int) (altitude / 3.2828);
                     speed    = (int) (speed    * 1.852);
                 //}
-				
-				
 
                 if (a->bFlags & MODES_ACFLAGS_SQUAWK_VALID) {
                     snprintf(strSquawk,5,"%04x", a->modeA);}
@@ -559,82 +557,41 @@ void interactiveShowData(void) {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 	                /*
-	                    uint32_t      addr;           // ICAO address
-                        //char          flight[16];     // Flight number	
-                        int           altitude;       // Altitude
-                        int           speed;          // Velocity
-                        int           track;          // Angle of flight
-                        int           vert_rate;      // Vertical rate.
-	                    long          messages;       // Number of Mode S messages received
-                        int           modeA;          // Squawk
-                        int           modeC;          // Altitude
-                        long          modeAcount;     // Mode A Squawk hit Count
-                        long          modeCcount;     // Mode C Altitude hit Count
-                        int           modeACflags;    // Flags for mode A/C recognition
-                        double        lat;
-	                    double        lon;            // Coordinated obtained from CPR encoded data
-	                    uint8_t       signal_source;  // Источник сигнала
-	                    time_t        seen;           // Time at which the last packet was received
-	                    unsigned int  pSignal;        // Уровень сигнала 
-	                    char endOfPacket[3]; // 0xFF 0xFF 0xFF
-						
-						uint32_t      addr;            // ICAO address
-	                    char          strMode[4];      // S
-	                    char          strSquawk[4];    // Sqwk
-	                    char          flight[8];       // Flight number	
-	                    char          strFl[5];        // Alt
-	                    char          strGs[3] ;       // Speed
-	                    char          strTt[3];        // Hdg
-	                    double        lat;             // Lat
-	                    double        lon;             // Coordinated obtained from CPR encoded data
-	                    uint8_t       signal_source;   // Источник сигнала
-	                    time_t        seen;            // Time at which the last packet was received
-	                    unsigned int  pSignal;         // Уровень сигнала 
-	                    char          endOfPacket[3];  // 0xFF 0xFF 0xFF
-						
-						
-						
-						
-	
+	uint32_t      addr;           // ICAO address
+    char          flight[16];     // Flight number	
+	unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
+    int           altitude;       // Altitude
+    int           speed;          // Velocity
+    int           track;          // Angle of flight
+    int           vert_rate;      // Vertical rate.
+    time_t        seen;           // Time at which the last packet was received
+    time_t        seenLatLon;     // Time at which the last lat long was calculated
+	uint64_t      timestamp;      // Timestamp at which the last packet was received
+	uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
+    double        lat, lon;       // Coordinated obtained from CPR encoded data
+	uint8_t       signal_source;  // Источник сигнала
+	unsigned char pSignal;        // Уровень сигнала 
+	char endOfPacket[3]; // 0xFF 0xFF 0xFF	
 					*/
-					struct ToFlyRf sendBuf;
-					memset(&sendBuf,0, sizeof(sendBuf));            // Очистить буфер
+					struct ToArduino sendBuf;
+					memset(&sendBuf,0, sizeof(sendBuf));
+
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
-					
-					sendBuf.addr = a->addr;					
-					//memcpy(sendBuf.mode, strMode,sizeof(sendBuf.mode));
-					memcpy(sendBuf.Squawk, strSquawk,sizeof(sendBuf.Squawk)); // Squawk 
-					//memcpy(sendBuf.strflight, a->flight,sizeof(sendBuf.strflight));
-					sendBuf.altitude = altitude;
-					sendBuf.speed = speed;
-					sendBuf.track = a->track;
-					sendBuf.vert_rate = a->vert_rate;
-					sendBuf.lat = a->lat;
-					sendBuf.lon = a->lon;
-					sendBuf.signal_source = 1;  // Источник сигнала
-					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
-					sendBuf.pSignal	= signalAverage;	
-					
-					/*
 					sendBuf.addr = a->addr;
 					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
-					sendBuf.vert_rate = a->vert_rate;
-					sendBuf.messages = msgs;
-					sendBuf.modeA = a->modeA;
-					sendBuf.modeC = a->modeC;
-					sendBuf.modeAcount = a->modeAcount;
-					sendBuf.modeCcount = a->modeCcount;
-					sendBuf.modeACflags = flags;
+					//sendBuf.vert_rate = a->vert_rate;
+					//sendBuf.timestamp = a->timestamp/1000/60;
+					//sendBuf.timestampLatLon = a->timestampLatLon;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.signal_source = 1;  // Источник сигнала
 					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
 					sendBuf.pSignal	= signalAverage;
-					*/
-					if(sendBuf.seen < 20) // Ограничил время ожидания приема пакетов.
+					
+					if(sendBuf.seen < 20)
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}

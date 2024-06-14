@@ -196,51 +196,24 @@ struct client {
 };
 
 #pragma pack(push,1)
-// Структура, используемая для описания самолета в интерактивном режиме
-struct ToFlyRf
+struct ToArduino
 {
-	/*
-	  printf("%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
-      a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
-      strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
-	
-	*/
-	
-	uint32_t      addr;            // ICAO address
-	//char          mode[4];      // S
-	char           Squawk[4];    // Sqwk  
-	//char          strflight[8];       // Flight number	
-	int           altitude;        // Altitude
-	int           speed;           // Velocity
-    int           track;           // Angle of flight
-    int           vert_rate;       // Vertical rate.
-	double        lat;             // Lat
-	double        lon;             // Coordinated obtained from CPR encoded data
-	uint8_t       signal_source;   // Источник сигнала
-	time_t        seen;            // Time at which the last packet was received
-	unsigned int  pSignal;         // Уровень сигнала 
-	char          endOfPacket[3];  // 0xFF 0xFF 0xFF
-	
-	/*
     uint32_t      addr;           // ICAO address
-    //char          flight[16];     // Flight number	
+   // char          flight[16];     // Flight number	
+	//unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
-    int           vert_rate;      // Vertical rate.
-	long          messages;       // Number of Mode S messages received
-    int           modeA;          // Squawk
-    int           modeC;          // Altitude
-    long          modeAcount;     // Mode A Squawk hit Count
-    long          modeCcount;     // Mode C Altitude hit Count
-    int           modeACflags;    // Flags for mode A/C recognition
+    //int           vert_rate;      // Vertical rate.
+    // time_t        seenLatLon;     // Time at which the last lat long was calculated
+	//uint64_t      timestamp;      // Timestamp at which the last packet was received
+	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
     double        lat;
-	double        lon;            // Coordinated obtained from CPR encoded data
+	double        lon;       // Coordinated obtained from CPR encoded data
 	uint8_t       signal_source;  // Источник сигнала
 	time_t        seen;           // Time at which the last packet was received
 	unsigned int  pSignal;        // Уровень сигнала 
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF
-	*/
 };
 #pragma pack(pop)
 
