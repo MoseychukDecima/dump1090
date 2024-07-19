@@ -578,13 +578,11 @@ void interactiveShowData(void) {
 					
 					sendBuf.addr = a->addr;
 					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));
-					//sendBuf.squawk = a->modeA;
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
 					sendBuf.vert_rate = a->vert_rate;
-
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.seen_time = (int)(now - a->seen); // Время получения последнего пакета

@@ -206,13 +206,10 @@ struct ToDUMP1090
     int           speed;          // Velocity
     int           track;          // Angle of flight
     int           vert_rate;      // Vertical rate.
-    // time_t        seenLatLon;     // Time at which the last lat long was calculated
-	//uint64_t      timestamp;      // Timestamp at which the last packet was received
-	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
     double        lat;
-	double        lon;       // Coordinated obtained from CPR encoded data
-	int          seen_time;           // Time at which the last packet was received
-	char endOfPacket[3]; // 0xFF 0xFF 0xFF
+	double        lon;             // Coordinated obtained from CPR encoded data
+	int          seen_time;        // Time at which the last packet was received
+	char endOfPacket[3];           // 0xFF 0xFF 0xFF
 };
 #pragma pack(pop)
 
