@@ -199,7 +199,7 @@ struct client {
 struct ToArduino
 {
     uint32_t      addr;           // ICAO address
-   // char          flight[16];     // Flight number	
+    char          flight[16];     // Flight number	
 	//unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
