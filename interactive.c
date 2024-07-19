@@ -465,7 +465,7 @@ void interactiveShowData(void) {
                 // Преобразуем единицы измерения в метрику, если указан параметр --metric
                 //if (Modes.metric) {
                     altitude = (int) (altitude / 3.2828);
-                    speed    = (int) (speed    * 1.852);
+                    speed    = (int) (speed    * 1.852);  // километры в час?
                 //}
 
                 if (a->bFlags & MODES_ACFLAGS_SQUAWK_VALID) {
@@ -572,15 +572,19 @@ void interactiveShowData(void) {
 	uint8_t       signal_source;  // Источник сигнала
 	unsigned char pSignal;        // Уровень сигнала 
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF	
+					
+					sizeof(myInts)/sizeof(int)
 					*/
 					struct ToDUMP1090 sendBuf;
-					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+					//memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+					memset(&sendBuf,0, 128); // Очистить массив
 
 					//memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					
 					sendBuf.addr = a->addr;
 					//sendBuf.squawk = a->modeA;
-					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
+					memcpy(sendBuf.flight,a->flight, 16);
+					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
@@ -593,7 +597,8 @@ void interactiveShowData(void) {
 										
 					if(sendBuf.seen < 30)
 					{
-					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					   write(serial_port, (void*)&sendBuf, 128);
+					  // write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
 					
 					//char buff[1024] = {0};
