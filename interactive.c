@@ -573,18 +573,13 @@ void interactiveShowData(void) {
 	unsigned char pSignal;        // Уровень сигнала 
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF	
 					
-					sizeof(myInts)/sizeof(int)
-					*/
+*/
 					struct ToDUMP1090 sendBuf;
-					//memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
-					memset(&sendBuf,0, 128); // Очистить массив
-
-					//memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 					
 					sendBuf.addr = a->addr;
 					//sendBuf.squawk = a->modeA;
-					memcpy(sendBuf.flight,a->flight, 16);
-					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
+					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
@@ -597,8 +592,7 @@ void interactiveShowData(void) {
 										
 					if(sendBuf.seen < 30)
 					{
-					   write(serial_port, (void*)&sendBuf, 128);
-					  // write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
 					
 					//char buff[1024] = {0};
