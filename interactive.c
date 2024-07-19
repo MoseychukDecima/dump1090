@@ -579,7 +579,7 @@ void interactiveShowData(void) {
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					
 					sendBuf.addr = a->addr;
-					sendBuf.squawk = a->modeA;
+					//sendBuf.squawk = a->modeA;
 					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;

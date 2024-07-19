@@ -199,7 +199,7 @@ struct client {
 struct ToDUMP1090
 {
     uint32_t      addr;           // ICAO address
-	int           squawk;            // Squawk
+	//int           squawk;            // Squawk
    // char          flight[16];     // Flight number	
     int           altitude;       // Altitude
     int           speed;          // Velocity
