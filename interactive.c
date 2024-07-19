@@ -586,8 +586,7 @@ void interactiveShowData(void) {
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
-		  		    //sendBuf.timestamp = a->timestamp/1000/60;
-					
+
 					
 					if(sendBuf.seen < 20)
 					{
