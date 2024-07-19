@@ -578,7 +578,7 @@ void interactiveShowData(void) {
 					
 					sendBuf.addr = a->addr;
 					sendBuf.squawk = a->modeA;
-					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
+					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
