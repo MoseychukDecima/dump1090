@@ -196,23 +196,19 @@ struct client {
 };
 
 #pragma pack(push,1)
-struct ToArduino
+struct ToDUMP1090
 {
     uint32_t      addr;           // ICAO address
+	int           squawk;         // Squawk
     char          flight[16];     // Flight number	
-	//unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
-    //int           vert_rate;      // Vertical rate.
-    // time_t        seenLatLon;     // Time at which the last lat long was calculated
-	//uint64_t      timestamp;      // Timestamp at which the last packet was received
-	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
+    int           vert_rate;      // Vertical rate.
     double        lat;
-	double        lon;       // Coordinated obtained from CPR encoded data
-	uint8_t       signal_source;  // Источник сигнала
+	double        lon;            // Coordinated obtained from CPR encoded data
 	time_t        seen;           // Time at which the last packet was received
-	unsigned int  pSignal;        // Уровень сигнала 
+    //uint64_t      timestamp;      // Timestamp at which the last packet was received
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF
 };
 #pragma pack(pop)

@@ -557,39 +557,37 @@ void interactiveShowData(void) {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 	                /*
-	uint32_t      addr;           // ICAO address
-    char          flight[16];     // Flight number	
-	unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
-    int           altitude;       // Altitude
-    int           speed;          // Velocity
-    int           track;          // Angle of flight
-    int           vert_rate;      // Vertical rate.
-    time_t        seen;           // Time at which the last packet was received
-    time_t        seenLatLon;     // Time at which the last lat long was calculated
-	uint64_t      timestamp;      // Timestamp at which the last packet was received
-	uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
-    double        lat, lon;       // Coordinated obtained from CPR encoded data
-	uint8_t       signal_source;  // Источник сигнала
-	unsigned char pSignal;        // Уровень сигнала 
-	char endOfPacket[3]; // 0xFF 0xFF 0xFF	
+	                uint32_t      addr;           // ICAO address
+	                int           squawk;         // Squawk
+                    char          flight[16];     // Flight number	
+                    int           altitude;       // Altitude
+                    int           speed;          // Velocity
+                    int           track;          // Angle of flight
+                    int           vert_rate;      // Vertical rate.
+                    double        lat;
+	                double        lon;            // Coordinated obtained from CPR encoded data
+	                uint8_t       aircraft_type;
+	                time_t        seen;           // Time at which the last packet was received
+                    //uint64_t      timestamp;      // Timestamp at which the last packet was received
+	                char endOfPacket[3]; // 0xFF 0xFF 0xFF
 					*/
-					struct ToArduino sendBuf;
+					struct ToDUMP1090 sendBuf;
 					memset(&sendBuf,0, sizeof(sendBuf));
 
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					
 					sendBuf.addr = a->addr;
+					sendBuf.squawk = a->modeA;
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
-					//sendBuf.vert_rate = a->vert_rate;
-					//sendBuf.timestamp = a->timestamp/1000/60;
-					//sendBuf.timestampLatLon = a->timestampLatLon;
+					sendBuf.vert_rate = a->vert_rate;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
-					sendBuf.signal_source = 1;  // Источник сигнала
 					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
-					sendBuf.pSignal	= signalAverage;
+		  		    //sendBuf.timestamp = a->timestamp/1000/60;
+					
 					
 					if(sendBuf.seen < 20)
 					{
