@@ -559,7 +559,6 @@ void interactiveShowData(void) {
 	                /*
 	uint32_t      addr;           // ICAO address
     char          flight[16];     // Flight number	
-	unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
@@ -578,6 +577,7 @@ void interactiveShowData(void) {
 					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 					
 					sendBuf.addr = a->addr;
+					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));
 					//sendBuf.squawk = a->modeA;
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
@@ -595,11 +595,12 @@ void interactiveShowData(void) {
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
 					
-					//char buff[1024] = {0};
+					//char buff[512] = {0};
 					//sprintf(buff, "Hello %06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
                     //a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
                     //strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
 					
+					//write(serial_port, buff, 40);
 					//write(serial_port, buff, 512);
 					
 	                close(serial_port);
