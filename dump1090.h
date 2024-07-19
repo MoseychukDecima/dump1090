@@ -131,7 +131,7 @@
 #define MODES_ACFLAGS_ALTITUDE_VALID (1<<1)  // Aircraft altitude is known
 #define MODES_ACFLAGS_HEADING_VALID  (1<<2)  // Aircraft heading is known
 #define MODES_ACFLAGS_SPEED_VALID    (1<<3)  // Aircraft speed is known
-#define MODES_ACFLAGS_VERTRATE_VALID (1<<4)  // Aircraft vertical rate is known
+#define MODES_ACFLAGS_VERTRATE_VALID (1<<4)  // Вертикальная скорость самолета известна.
 #define MODES_ACFLAGS_SQUAWK_VALID   (1<<5)  // Aircraft Mode A Squawk is known
 #define MODES_ACFLAGS_CALLSIGN_VALID (1<<6)  // Aircraft Callsign Identity
 #define MODES_ACFLAGS_EWSPEED_VALID  (1<<7)  // Aircraft East West Speed is known
@@ -196,24 +196,21 @@ struct client {
 };
 
 #pragma pack(push,1)
-struct ToArduino
+struct ToDUMP1090
 {
     uint32_t      addr;           // ICAO address
-   // char          flight[16];     // Flight number	
-	//unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
+	int           squawk;         // Squawk
+	char          flight[16];     // Flight number	
     int           altitude;       // Altitude
     int           speed;          // Velocity
     int           track;          // Angle of flight
-    //int           vert_rate;      // Vertical rate.
-    // time_t        seenLatLon;     // Time at which the last lat long was calculated
-	//uint64_t      timestamp;      // Timestamp at which the last packet was received
-	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
-    double        lat;
-	double        lon;       // Coordinated obtained from CPR encoded data
-	uint8_t       signal_source;  // Источник сигнала
+    int           vert_rate;      // Vertical rate.
+	double        lat;
+	double        lon;            // Coordinated obtained from CPR encoded data
+	uint8_t       aircraft_type;
 	time_t        seen;           // Time at which the last packet was received
-	unsigned int  pSignal;        // Уровень сигнала 
-	char endOfPacket[3]; // 0xFF 0xFF 0xFF
+	uint64_t      timestamp;      // Timestamp at which the last packet was received
+	char endOfPacket[3];          // 0xFF 0xFF 0xFF
 };
 #pragma pack(pop)
 

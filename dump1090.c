@@ -122,17 +122,17 @@ void modesInit(void) {
     } else if (Modes.fUserLon > 180.0) { // If Longitude is +180 to +360, make it -180 to 0
         Modes.fUserLon -= 360.0;
     }
-    // If both Lat and Lon are 0.0 then the users location is either invalid/not-set, or (s)he's in the 
-    // Atlantic ocean off the west coast of Africa. This is unlikely to be correct. 
-    // Set the user LatLon valid flag only if either Lat or Lon are non zero. Note the Greenwich meridian 
-    // is at 0.0 Lon,so we must check for either fLat or fLon being non zero not both. 
-    // Testing the flag at runtime will be much quicker than ((fLon != 0.0) || (fLat != 0.0))
+    // Если и широта, и долгота равны 0,0, то местоположение пользователя либо неверно/не установлено, либо он находится в
+ // Атлантический океан у западного побережья Африки. Вряд ли это правильно.
+ // Устанавливаем действительный флаг пользователя LatLon только в том случае, если Lat или Lon не равны нулю. Обратите внимание на Гринвичский меридиан.
+ // имеет значение 0,0 Lon, поэтому мы должны проверить, что либо fLat, либо fLon не равны нулю, а не оба одновременно.
+ // Проверка флага во время выполнения будет намного быстрее, чем ((fLon != 0.0) || (fLat != 0.0))
     Modes.bUserFlags &= ~MODES_USER_LATLON_VALID;
     if ((Modes.fUserLat != 0.0) || (Modes.fUserLon != 0.0)) {
         Modes.bUserFlags |= MODES_USER_LATLON_VALID;
     }
 
-    // Limit the maximum requested raw output size to less than one Ethernet Block 
+    // Ограничьте максимальный запрошенный размер необработанных выходных данных до менее одного блока Ethernet.
     if (Modes.net_output_raw_size > (MODES_RAWOUT_BUF_FLUSH))
       {Modes.net_output_raw_size = MODES_RAWOUT_BUF_FLUSH;}
     if (Modes.net_output_raw_rate > (MODES_RAWOUT_BUF_RATE))
@@ -145,35 +145,35 @@ void modesInit(void) {
     for (i = 0; i < MODES_ASYNC_BUF_NUMBER; i++)
       {Modes.stSystemTimeRTL[i] = Modes.stSystemTimeBlk;}
 
-    // Each I and Q value varies from 0 to 255, which represents a range from -1 to +1. To get from the 
-    // unsigned (0-255) range you therefore subtract 127 (or 128 or 127.5) from each I and Q, giving you 
-    // a range from -127 to +128 (or -128 to +127, or -127.5 to +127.5)..
-    //
-    // To decode the AM signal, you need the magnitude of the waveform, which is given by sqrt((I^2)+(Q^2))
-    // The most this could be is if I&Q are both 128 (or 127 or 127.5), so you could end up with a magnitude 
-    // of 181.019 (or 179.605, or 180.312)
-    //
-    // However, in reality the magnitude of the signal should never exceed the range -1 to +1, because the 
-    // values are I = rCos(w) and Q = rSin(w). Therefore the integer computed magnitude should (can?) never 
-    // exceed 128 (or 127, or 127.5 or whatever)
-    //
-    // If we scale up the results so that they range from 0 to 65535 (16 bits) then we need to multiply 
-    // by 511.99, (or 516.02 or 514). antirez's original code multiplies by 360, presumably because he's 
-    // assuming the maximim calculated amplitude is 181.019, and (181.019 * 360) = 65166.
-    //
-    // So lets see if we can improve things by subtracting 127.5, Well in integer arithmatic we can't
-    // subtract half, so, we'll double everything up and subtract one, and then compensate for the doubling 
-    // in the multiplier at the end.
-    //
-    // If we do this we can never have I or Q equal to 0 - they can only be as small as +/- 1.
-    // This gives us a minimum magnitude of root 2 (0.707), so the dynamic range becomes (1.414-255). This 
-    // also affects our scaling value, which is now 65535/(255 - 1.414), or 258.433254
-    //
-    // The sums then become mag = 258.433254 * (sqrt((I*2-255)^2 + (Q*2-255)^2) - 1.414)
-    //                   or mag = (258.433254 * sqrt((I*2-255)^2 + (Q*2-255)^2)) - 365.4798
-    //
-    // We also need to clip mag just incaes any rogue I/Q values somehow do have a magnitude greater than 255.
-    //
+// Каждое значение I и Q варьируется от 0 до 255, что соответствует диапазону от -1 до +1. Чтобы получить от
+ // беззнаковый диапазон (0–255), поэтому вы вычитаете 127 (или 128, или 127,5) из каждого I и Q, получая
+ // диапазон от -127 до +128 (или от -128 до +127, или от -127,5 до +127,5)..
+ //
+ // Чтобы декодировать сигнал AM, вам нужна величина сигнала, которая задается sqrt((I^2)+(Q^2))
+ // Самое большее, что может быть, это если I&Q оба равны 128 (или 127, или 127,5), так что в итоге вы можете получить величину
+ // из 181.019 (или 179.605, или 180.312)
+ //
+ // Однако на самом деле величина сигнала никогда не должна превышать диапазон от -1 до +1, потому что
+ // значения I = rCos(w) и Q = rSin(w). Следовательно, вычисленная целочисленная величина никогда не должна (может?)
+ // превышаем 128 (или 127, или 127,5, или что-то еще)
+ //
+ // Если мы увеличим результаты так, чтобы они находились в диапазоне от 0 до 65535 (16 бит), нам нужно будет умножить
+ // на 511,99 (или 516,02 или 514). исходный код антиреза умножается на 360, предположительно потому, что он
+ // предполагая, что максимальная рассчитанная амплитуда равна 181,019 и (181,019 * 360) = 65166.
+ //
+ // Итак, давайте посмотрим, сможем ли мы улучшить ситуацию, вычитая 127,5. Ну, в целочисленной арифметике мы не можем
+ // вычитаем половину, то есть удвоим все и вычтем единицу, а затем компенсируем удвоение
+ // в множителе в конце.
+ //
+ // Если мы сделаем это, мы никогда не сможем получить I или Q равными 0 — они могут быть только +/- 1.
+ // Это дает нам минимальную величину корня 2 (0,707), поэтому динамический диапазон становится (1,414-255). Этот
+ // также влияет на наше значение масштабирования, которое теперь равно 65535/(255 - 1,414) или 258,433254
+ //
+ // Тогда суммы станут mag = 258,433254 * (sqrt((I*2-255)^2 + (Q*2-255)^2) - 1,414)
+ // или mag = (258.433254 * sqrt((I*2-255)^2 + (Q*2-255)^2)) - 365.4798
+ //
+ // Нам также нужно обрезать магнитную величину только потому, что любые неверные значения I/Q каким-то образом имеют величину больше 255.
+ //
 
     for (i = 0; i <= 255; i++) {
         for (q = 0; q <= 255; q++) {
@@ -289,13 +289,13 @@ void modesInitRTLSDR(void) {
 //
 //=========================================================================
 //
-// We use a thread reading data in background, while the main thread
-// handles decoding and visualization of data to the user.
+// Мы используем поток, считывающий данные в фоновом режиме, в то время как основной поток
+// обрабатывает декодирование и визуализацию данных для пользователя.
 //
-// The reading thread calls the RTLSDR API to read data asynchronously, and
-// uses a callback to populate the data buffer.
+// Поток чтения вызывает API RTLSDR для асинхронного считывания данных и
+// использует обратный вызов для заполнения буфера данных.
 //
-// A Mutex is used to avoid races with the decoding thread.
+// Мьютекс используется для предотвращения гонок с потоком декодирования.
 //
 void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx) {
 
@@ -317,25 +317,25 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx) {
     Modes.iDataReady = (MODES_ASYNC_BUF_NUMBER-1) & (Modes.iDataIn - Modes.iDataOut);   
 
     if (Modes.iDataReady == 0) {
-      // Ooooops. We've just received the MODES_ASYNC_BUF_NUMBER'th outstanding buffer
-      // This means that RTLSDR is currently overwriting the MODES_ASYNC_BUF_NUMBER+1
-      // buffer, but we havent yet processed it, so we're going to lose it. There
-      // isn't much we can do to recover the lost data, but we can correct things to
-      // avoid any additional problems.
+     // Ой-ой-ой. Мы только что получили MODES_ASYNC_BUF_NUMBER-ый невыполненный буфер
+     // Это означает, что RTLSDR в настоящее время перезаписывает MODES_ASYNC_BUF_NUMBER+1
+     // буфер, но мы его еще не обработали, поэтому мы его потеряем. Мы
+     // мало что можем сделать, чтобы восстановить потерянные данные, но мы можем исправить некоторые вещи, чтобы
+     // избежать дополнительных проблем.
       Modes.iDataOut   = (MODES_ASYNC_BUF_NUMBER-1) & (Modes.iDataOut+1);
       Modes.iDataReady = (MODES_ASYNC_BUF_NUMBER-1);   
       Modes.iDataLost++;
     }
  
-    // Signal to the other thread that new data is ready, and unlock
+   // Сигнал другому потоку о готовности новых данных и разблокировка
     pthread_cond_signal(&Modes.data_cond);
     pthread_mutex_unlock(&Modes.data_mutex);
 }
 //
 //=========================================================================
 //
-// This is used when --ifile is specified in order to read data from file
-// instead of using an RTLSDR device
+// Это используется, когда указан --ifile для чтения данных из файла
+// вместо использования устройства RTLSDR
 //
 void readDataFromFile(void) {
     pthread_mutex_lock(&Modes.data_mutex);
@@ -389,8 +389,8 @@ void readDataFromFile(void) {
 //
 //=========================================================================
 //
-// We read data using a thread, so the main thread only handles decoding
-// without caring about data acquisition
+// Мы читаем данные с помощью потока, поэтому основной поток занимается только декодированием
+// не заботясь о сборе данных
 //
 void *readerThreadEntryPoint(void *arg) {
     MODES_NOTUSED(arg);
@@ -414,8 +414,8 @@ void *readerThreadEntryPoint(void *arg) {
 //
 // ============================== Snip mode =================================
 //
-// Get raw IQ samples and filter everything is < than the specified level
-// for more than 256 samples in order to reduce example file size
+// Получаем необработанные образцы IQ и фильтруем все, что < указанного уровня
+// для более чем 256 образцов, чтобы уменьшить размер файла примера
 //
 void snipMode(int level) {
     int i, q;
@@ -610,9 +610,9 @@ static void display_stats(void) {
 //
 //=========================================================================
 //
-// This function is called a few times every second by main in order to
-// perform tasks we need to do continuously, like accepting new clients
-// from the net, refreshing the screen in interactive mode, and so forth
+// Эта функция вызывается несколько раз в секунду основной функцией для того, чтобы
+// выполнять задачи, которые нам нужно выполнять постоянно, например, принимать новых клиентов
+// из сети, обновлять экран в интерактивном режиме и т. д.
 //
 void backgroundTasks(void) {
     static time_t next_stats;

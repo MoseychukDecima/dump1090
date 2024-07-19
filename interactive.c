@@ -126,8 +126,8 @@ struct stDF *interactiveFindDF(uint32_t addr) {
 //
 //========================= Interactive mode ===============================
 //
-// Return a new aircraft structure for the interactive mode linked list
-// of aircraft
+// Возвращаем новую структуру самолета для связанного списка интерактивного режима
+// самолетов
 //
 struct aircraft *interactiveCreateAircraft(struct modesMessage *mm) {
     struct aircraft *a = (struct aircraft *) malloc(sizeof(*a));
@@ -174,27 +174,27 @@ struct aircraft *interactiveFindAircraft(uint32_t addr) {
 //
 //=========================================================================
 //
-// We have received a Mode A or C response. 
+// Мы получили ответ в режиме A или C.
 //
-// Search through the list of known Mode-S aircraft and tag them if this Mode A/C 
-// matches their known Mode S Squawks or Altitudes(+/- 50feet).
+// Поиск в списке известных самолетов с режимом S и пометка их, если этот режим A/C
+// соответствует известным сигналам режима S или высоте (+/- 50 футов).
 //
-// A Mode S equipped aircraft may also respond to Mode A and Mode C SSR interrogations.
-// We can't tell if this is a Mode A or C, so scan through the entire aircraft list
-// looking for matches on Mode A (squawk) and Mode C (altitude). Flag in the Mode S
-// records that we have had a potential Mode A or Mode C response from this aircraft. 
+// Воздушное судно, оснащенное режимом S, также может отвечать на запросы SSR в режимах A и C.
+// Мы не можем сказать, режим это A или C, поэтому просматриваем весь список самолетов
+// ищем совпадения в режиме A (сигнал) и режиме C (высота). Флаг в режиме S
+// записывает, что мы получили потенциальный ответ в режиме A или C от этого самолета.
 //
-// If an aircraft responds to Mode A then it's highly likely to be responding to mode C 
-// too, and vice verca. Therefore, once the mode S record is tagged with both a Mode A
-// and a Mode C flag, we can be fairly confident that this Mode A/C frame relates to that
-// Mode S aircraft.
+// Если самолет реагирует на режим A, то, скорее всего, он реагирует на режим C
+// тоже, и наоборот. Таким образом, как только запись в режиме S помечается как
+// и флаг режима C, мы можем быть вполне уверены, что этот кадр режима A/C относится к этому
+// Самолет режима S.
 //
-// Mode C's are more likely to clash than Mode A's; There could be several aircraft 
-// cruising at FL370, but it's less likely (though not impossible) that there are two 
-// aircraft on the same squawk. Therefore, give precidence to Mode A record matches
+// Режим C чаще конфликтует, чем режим A; Может быть несколько самолетов
+// курсируем на эшелоне FL370, но менее вероятно (хотя и не невозможно), что их будет два
+// самолет на том же крике. Поэтому отдавайте предпочтение совпадениям записей в режиме А.
 //
-// Note : It's theoretically possible for an aircraft to have the same value for Mode A 
-// and Mode C. Therefore we have to check BOTH A AND C for EVERY S.
+// Примечание. Теоретически возможно, что самолет будет иметь такое же значение для режима A.
+// и режим C. Поэтому мы должны проверить ОБА A И C для КАЖДОГО S.
 //
 void interactiveUpdateAircraftModeA(struct aircraft *a) {
     struct aircraft *b = Modes.aircrafts;
@@ -216,10 +216,10 @@ void interactiveUpdateAircraftModeA(struct aircraft *a) {
                 }
             }
 
-            // If both (a) and (b) have valid altitudes...
+            // Если и (a), и (b) имеют действительные высоты...
             if ((a->bFlags & b->bFlags) & MODES_ACFLAGS_ALTITUDE_VALID) {
-                // ... check for Mode-C == Mode-S Altitude matches
-                if (  (a->modeC     == b->modeC    )     // If a 'real' Mode-S ICAO exists at this Mode-C Altitude
+                // ... проверьте совпадения высоты Mode-C == Mode-S
+                if (  (a->modeC     == b->modeC    )     // Если «настоящий» режим S ICAO существует на этой высоте режима C
                    || (a->modeC     == b->modeC + 1)     //          or this Mode-C - 100 ft
                    || (a->modeC + 1 == b->modeC    ) ) { //          or this Mode-C + 100 ft
                     b->modeCcount   = a->messages;
@@ -227,7 +227,7 @@ void interactiveUpdateAircraftModeA(struct aircraft *a) {
                     a->modeACflags |= MODEAC_MSG_MODEC_HIT;
                     if ( (b->modeAcount > 0) &&
                          (b->modeCcount > 1) )
-                        {a->modeACflags |= (MODEAC_MSG_MODES_HIT | MODEAC_MSG_MODEC_OLD);} // flag this ModeA/C probably belongs to a known Mode S                    
+                        {a->modeACflags |= (MODEAC_MSG_MODES_HIT | MODEAC_MSG_MODEC_OLD);} // отметьте, что этот режим ModeA/C, вероятно, принадлежит известному режиму S                   
                 }
             }
         }
@@ -299,7 +299,7 @@ struct aircraft *interactiveReceiveData(struct modesMessage *mm) {
         memcpy(a->flight, mm->flight, sizeof(a->flight));
     }
 
-    // If a (new) ALTITUDE has been received, copy it to the aircraft structure
+    // Если получена (новая) ВЫСОТА, скопируйте ее в структуру самолета.
     if (mm->bFlags & MODES_ACFLAGS_ALTITUDE_VALID) {
         if ( (a->modeCcount)                   // if we've a modeCcount already
           && (a->altitude  != mm->altitude ) ) // and Altitude has changed
@@ -322,7 +322,7 @@ struct aircraft *interactiveReceiveData(struct modesMessage *mm) {
         a->modeA = mm->modeA;
     }
 
-    // If a (new) HEADING has been received, copy it to the aircraft structure
+    // Если получен (новый) HEADING, скопируйте его в структуру самолета.
     if (mm->bFlags & MODES_ACFLAGS_HEADING_VALID) {
         a->track = mm->heading;
     }
@@ -462,7 +462,7 @@ void interactiveShowData(void) {
                 char strTt[5]     = " ";
                 char strGs[5]     = " ";
 
-                // Convert units to metric if --metric was specified
+                // Преобразуем единицы измерения в метрику, если указан параметр --metric
                 //if (Modes.metric) {
                     altitude = (int) (altitude / 3.2828);
                     speed    = (int) (speed    * 1.852);
@@ -520,7 +520,7 @@ void interactiveShowData(void) {
                     strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
 					
 					//int serial_port = open("/dev/ttyAMA0", O_RDWR);
-                    int serial_port = open("/dev/ttyS0", O_RDWR); // OrangePi
+                    int serial_port = open("/dev/ttyS0", O_RDWR); //  
                     struct termios tty;
 
                     if (tcgetattr(serial_port, &tty) != 0)
@@ -557,39 +557,37 @@ void interactiveShowData(void) {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 	                /*
-	uint32_t      addr;           // ICAO address
-    char          flight[16];     // Flight number	
-	unsigned char signalLevel[8];  // Last 8 Signal Amplitudes
-    int           altitude;       // Altitude
-    int           speed;          // Velocity
-    int           track;          // Angle of flight
-    int           vert_rate;      // Vertical rate.
-    time_t        seen;           // Time at which the last packet was received
-    time_t        seenLatLon;     // Time at which the last lat long was calculated
-	uint64_t      timestamp;      // Timestamp at which the last packet was received
-	uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
-    double        lat, lon;       // Coordinated obtained from CPR encoded data
-	uint8_t       signal_source;  // Источник сигнала
-	unsigned char pSignal;        // Уровень сигнала 
-	char endOfPacket[3]; // 0xFF 0xFF 0xFF	
+                     uint32_t      addr;           // ICAO address
+	                 int           squawk;          // Squawk
+	                 char          flight[16];     // Flight number	
+                     int           altitude;       // Altitude
+                     int           speed;          // Velocity
+                     int           track;          // Angle of flight
+                     int           vert_rate;      // Vertical rate.
+	                 double        lat;
+	                 double        lon;            // Coordinated obtained from CPR encoded data
+	                 uint8_t       aircraft_type;
+	                 time_t        seen;           // Time at which the last packet was received
+	                 uint64_t      timestamp;      // Timestamp at which the last packet was received
+	                 char endOfPacket[3];          // 0xFF 0xFF 0xFF
 					*/
-					struct ToArduino sendBuf;
+					struct ToDUMP1090 sendBuf;
+					
 					memset(&sendBuf,0, sizeof(sendBuf));
-
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					
 					sendBuf.addr = a->addr;
-					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
+					sendBuf.squawk = a->modeA;
+					memcpy(sendBuf.flight,a->flight, sizeof(a->flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
-					//sendBuf.vert_rate = a->vert_rate;
-					//sendBuf.timestamp = a->timestamp/1000/60;
-					//sendBuf.timestampLatLon = a->timestampLatLon;
+					sendBuf.vert_rate = a->vert_rate;
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
-					sendBuf.signal_source = 1;  // Источник сигнала
+					sendBuf.aircraft_type = 9;
 					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
-					sendBuf.pSignal	= signalAverage;
+					sendBuf.timestamp = a->timestamp/1000/60;
 					
 					if(sendBuf.seen < 20)
 					{
