@@ -574,24 +574,24 @@ void interactiveShowData(void) {
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF	
 					*/
 					struct ToDUMP1090 sendBuf;
-					memset(&sendBuf,0, sizeof(sendBuf));
+					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 
-					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					//memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 					
 					sendBuf.addr = a->addr;
 					//sendBuf.squawk = a->modeA;
-					//memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
+					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
 					sendBuf.altitude = altitude;
 					sendBuf.speed = speed;
 					sendBuf.track = a->track;
 					sendBuf.vert_rate = a->vert_rate;
-					//sendBuf.timestamp = a->timestamp/1000/60;
-					
+
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
 					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
+					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 										
-					if(sendBuf.seen < 20)
+					if(sendBuf.seen < 30)
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
