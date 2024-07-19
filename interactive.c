@@ -587,7 +587,7 @@ void interactiveShowData(void) {
 
 					sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
-					sendBuf.seen = (int)(now - a->seen); // Время получения последнего пакета
+					sendBuf.seen_time = (int)(now - a->seen); // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 										
 					if(sendBuf.seen < 30)

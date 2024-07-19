@@ -211,7 +211,7 @@ struct ToDUMP1090
 	//uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
     double        lat;
 	double        lon;       // Coordinated obtained from CPR encoded data
-	time_t        seen;           // Time at which the last packet was received
+	int          seen_time;           // Time at which the last packet was received
 	char endOfPacket[3]; // 0xFF 0xFF 0xFF
 };
 #pragma pack(pop)
