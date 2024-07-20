@@ -464,8 +464,8 @@ void interactiveShowData(void) {
 
                 // Преобразуем единицы измерения в метрику, если указан параметр --metric
                 //if (Modes.metric) {
-                    altitude = (int) (altitude / 3.2828);
-                    speed    = (int) (speed    * 1.852);  // километры в час?
+                    altitude = (int) (altitude / 3.2828);  // Футы = метры × 3,28084.
+                    speed    = (int) (speed    * 1.852);   // километры в час
                 //}
 
                 if (a->bFlags & MODES_ACFLAGS_SQUAWK_VALID) {
@@ -556,36 +556,22 @@ void interactiveShowData(void) {
                     {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
-	                /*
-	uint32_t      addr;           // ICAO address
-    char          flight[16];     // Flight number	
-    int           altitude;       // Altitude
-    int           speed;          // Velocity
-    int           track;          // Angle of flight
-    int           vert_rate;      // Vertical rate.
-    time_t        seen;           // Time at which the last packet was received
-    time_t        seenLatLon;     // Time at which the last lat long was calculated
-	uint64_t      timestamp;      // Timestamp at which the last packet was received
-	uint64_t      timestampLatLon;// Timestamp at which the last lat long was calculated
-    double        lat, lon;       // Coordinated obtained from CPR encoded data
-	uint8_t       signal_source;  // Источник сигнала
-	unsigned char pSignal;        // Уровень сигнала 
-	char endOfPacket[3]; // 0xFF 0xFF 0xFF	
-					
-*/
+
 					struct ToDUMP1090 sendBuf;
 					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 					
-					sendBuf.addr = a->addr;
-					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));
-					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight));
-					sendBuf.altitude = altitude;
-					sendBuf.speed = speed;
-					sendBuf.track = a->track;
-					sendBuf.vert_rate = a->vert_rate;
-					sendBuf.lat = a->lat;
-					sendBuf.lon = a->lon;
-					sendBuf.seen_time = (int)(now - a->seen); // Время получения последнего пакета
+					sendBuf.addr = a->addr;                                   // ICAO address
+					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
+					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight)); // номер рейса
+					sendBuf.altitude = altitude;                              // Altitude метры
+					sendBuf.speed = speed;                                    // Скорость км/час
+					sendBuf.track = a->track;                                 // курс в градусах
+					sendBuf.vert_rate = a->vert_rate;                         // скорость подъема/снижения
+					memcpy(sendBuf.strLat_msg,strLat, sizeof(strLat));  
+					memcpy(sendBuf.strLon_msg,strLon, sizeof(strLon));  
+					//sendBuf.lat = a->lat;
+					//sendBuf.lon = a->lon;
+					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 										
 					if(sendBuf.seen_time < 30)
