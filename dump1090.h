@@ -200,7 +200,7 @@ struct ToDUMP1090
 {
     uint32_t  addr;           // ICAO address
 	char      squawk[5];               // Squawk
-    char      flight[9];      // Flight number	
+    char      flight[16];     // Flight number	
     int       altitude;       // Altitude
     int       speed;          // Velocity
     int       track;          // Angle of flight
