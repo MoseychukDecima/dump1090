@@ -569,7 +569,7 @@ void interactiveShowData(void) {
 					sendBuf.vert_rate = a->vert_rate;                         // скорость подъема/снижения
 				    sendBuf.lat = a->lat;
 					sendBuf.lon = a->lon;
-					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
+					sendBuf.seen_time = (int)(now - a->seen);                 // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 										
 					if(sendBuf.seen_time < 30)
