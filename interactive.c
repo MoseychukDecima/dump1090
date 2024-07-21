@@ -573,11 +573,18 @@ void interactiveShowData(void) {
 					//sendBuf.lon = a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
-										
-					if(sendBuf.seen_time < 30)
+								
+					if((int)(now - a->seen) < 55)
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
+
+
+								
+					//if(sendBuf.seen_time < 55)
+					//{
+					 //  write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					//}
 					
 					//char buff[512] = {0};
 					//sprintf(buff, "Hello %06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
