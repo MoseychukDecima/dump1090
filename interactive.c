@@ -567,10 +567,8 @@ void interactiveShowData(void) {
 					sendBuf.speed = speed;                                    // Скорость км/час
 					sendBuf.track = a->track;                                 // курс в градусах
 					sendBuf.vert_rate = a->vert_rate;                         // скорость подъема/снижения
-					memcpy(sendBuf.strLat_msg,strLat, sizeof(strLat));  
-					memcpy(sendBuf.strLon_msg,strLon, sizeof(strLon));  
-					//sendBuf.lat = a->lat;
-					//sendBuf.lon = a->lon;
+				    sendBuf.lat = a->lat;
+					sendBuf.lon = a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 										
