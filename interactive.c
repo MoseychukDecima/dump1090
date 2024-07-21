@@ -561,8 +561,7 @@ void interactiveShowData(void) {
 					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 					
 					sendBuf.addr = a->addr;                                   // ICAO address
-					sendBuf.squawk = a->modeA;
-					//memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
+					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight)); // номер рейса
 					sendBuf.altitude = altitude;                              // Altitude метры
 					sendBuf.speed = speed;                                    // Скорость км/час
