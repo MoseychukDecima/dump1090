@@ -561,14 +561,15 @@ void interactiveShowData(void) {
 					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 					
 					sendBuf.addr = a->addr;                                   // ICAO address
-					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
+					sendBuf.squawk = a->modeA;
+					//memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight)); // номер рейса
 					sendBuf.altitude = altitude;                              // Altitude метры
 					sendBuf.speed = speed;                                    // Скорость км/час
 					sendBuf.track = a->track;                                 // курс в градусах
 					sendBuf.vert_rate = a->vert_rate;                         // скорость подъема/снижения
-					sendBuf.lat = a->lat;
-					sendBuf.lon = a->lon;
+					sendBuf.lat_msg = a->lat;
+					sendBuf.lon_msg = a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 								
