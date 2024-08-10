@@ -569,8 +569,8 @@ void interactiveShowData(void) {
 					sendBuf.vert_rate = a->vert_rate;                         // скорость подъема/снижения
 					//memcpy(sendBuf.strLat_msg,strLat, sizeof(strLat));  
 					//memcpy(sendBuf.strLon_msg,strLon, sizeof(strLon));  
-					sendBuf.lat = (double)a->lat;
-					sendBuf.lon = (double)a->lon;
+					sendBuf.lat = (float)a->lat;
+					sendBuf.lon = (float)a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 								
