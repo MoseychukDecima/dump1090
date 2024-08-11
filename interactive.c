@@ -549,8 +549,12 @@ void interactiveShowData(void) {
                         tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
                         tty.c_cc[VMIN] = 0;
 
-                        cfsetispeed(&tty, B115200);
-                        cfsetospeed(&tty, B115200);
+                        cfsetispeed(&tty, B19200);
+                        cfsetospeed(&tty, B19200);
+						
+						// cfsetispeed(&tty, B115200);
+                        //cfsetospeed(&tty, B115200);
+						
 
                     if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
                     {
@@ -567,19 +571,23 @@ void interactiveShowData(void) {
 					sendBuf.speed = speed;                                    // Скорость км/час
 					sendBuf.track = a->track;                                 // курс в градусах
 					sendBuf.vert_rate = a->vert_rate;                         // скорость подъема/снижения
-					//memcpy(sendBuf.strLat_msg,strLat, sizeof(strLat));  
-					//memcpy(sendBuf.strLon_msg,strLon, sizeof(strLon));  
 					sendBuf.lat = (float)a->lat;
 					sendBuf.lon = (float)a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 								
-					if((int)(now - a->seen) < 55)
-					{
-					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
-					}
+								
 
-
+                    /* Проверяем наличие новой информации */
+	                if ((mstime() - Modes.1090_last_update) > MODES_INTERACTIVE_1090_TIME)
+                    {
+						Modes.1090_last_update = mstime();
+ 		
+				  	    if((int)(now - a->seen) < 55)
+					    {
+					       write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					    }
+	                }
 								
 					//if(sendBuf.seen_time < 55)
 					//{

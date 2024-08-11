@@ -164,6 +164,7 @@
 #define MODES_INTERACTIVE_ROWS          22      // Rows on screen
 #define MODES_INTERACTIVE_DELETE_TTL   300      // Delete from the list after 300 seconds
 #define MODES_INTERACTIVE_DISPLAY_TTL   60      // Delete from display after 60 seconds
+#define MODES_INTERACTIVE_1090_TIME   1000      // Milliseconds
 
 #define MODES_NET_HEARTBEAT_RATE       900      // Each block is approx 65mS - default is > 1 min
 
@@ -348,6 +349,7 @@ struct stModes {                             // Internal state
     // Interactive mode
     struct aircraft *aircrafts;
     uint64_t         interactive_last_update; // Last screen update in milliseconds
+	uint64_t         1090_last_update;        // Last screen update in milliseconds
     time_t           last_cleanup_time;       // Last cleanup time in seconds
 
     // DF List mode
