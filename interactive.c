@@ -520,28 +520,7 @@ void interactiveShowData(void)
                         snprintf(strFl, 6, "%5d", altitude);
                     }
 
-                    printf("%06X  %-4s  %-4s  %-8s %5s  %3s  %3s  %7s %8s  %3d %5d   %2d\n",
-                    a->addr, strMode, strSquawk, a->flight, strFl, strGs, strTt,
-                    strLat, strLon, signalAverage, msgs, (int)(now - a->seen));
-					
-					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
-					
-					sendBuf.addr = a->addr;                                   // ICAO address
-					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
-					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight)); // номер рейса
-					sendBuf.altitude = altitude;                              // Altitude метры
-					sendBuf.speed = speed;                                    // Скорость км/час
-					sendBuf.track = a->track;                                 // курс в градусах
-					sendBuf.vert_rate = a->vert_rate;                         // скорость подъема/снижения
-					sendBuf.lat = (float)a->lat;
-					sendBuf.lon = (float)a->lon;
-					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
-					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
-                    send_time = (int)(now - a->seen);
-                }
-                count++;
-            }
-        }
+
                     int serial_port = open("/dev/ttyS0", O_RDWR); //  
                     struct termios tty;
 
@@ -579,9 +558,8 @@ void interactiveShowData(void)
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 
-/*
-				//	struct ToDUMP1090 sendBuf;
-				//	memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+					struct ToDUMP1090 sendBuf;
+					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 					
 					sendBuf.addr = a->addr;                                   // ICAO address
 					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
@@ -594,16 +572,18 @@ void interactiveShowData(void)
 					sendBuf.lon = (float)a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
-								*/
-					//if((int)(now - send_time) < 55)
-					//if(sizeof(sendBuf) > 0)
-					//{
+								
+					if((int)(now - a->seen) < 55)
+					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
-					   memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
-					//}
-
-                    close(serial_port);
-        a = a->next;
+					}
+					
+	                close(serial_port);
+                }
+                count++;
+            }
+        }
+      a = a->next;
     }
 }
 //
