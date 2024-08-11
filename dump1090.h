@@ -160,7 +160,7 @@
 // at least greater than a given level for us to dump the signal.
 #define MODES_DEBUG_NOPREAMBLE_LEVEL 25
 
-#define MODES_INTERACTIVE_REFRESH_TIME 250      // Milliseconds
+#define MODES_INTERACTIVE_REFRESH_TIME 1000//250      // Milliseconds
 #define MODES_INTERACTIVE_ROWS          22      // Rows on screen
 #define MODES_INTERACTIVE_DELETE_TTL   300      // Delete from the list after 300 seconds
 #define MODES_INTERACTIVE_DISPLAY_TTL   60      // Delete from display after 60 seconds
@@ -205,10 +205,6 @@ struct ToDUMP1090
     int       speed;          // Velocity
     int       track;          // Angle of flight
     int       vert_rate;      // Vertical rate.
-	//char      strLat_msg[8];
-   // char      strLon_msg[9];
-//    double        lat;
-//	double        lon;             // Coordinated obtained from CPR encoded data
 	float        lat;
 	float        lon;             // Coordinated obtained from CPR encoded data
 	int          seen_time;        // Time at which the last packet was received
