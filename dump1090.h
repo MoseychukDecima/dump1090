@@ -206,7 +206,7 @@ struct ToDUMP1090
     int       track;          // Angle of flight
     int       vert_rate;      // Vertical rate.
 	float        lat;
-	float        lon;             // Coordinated obtained from CPR encoded data
+	float        lon;              // Coordinated obtained from CPR encoded data
 	int          seen_time;        // Time at which the last packet was received
 	char endOfPacket[3];           // 0xFF 0xFF 0xFF
 };

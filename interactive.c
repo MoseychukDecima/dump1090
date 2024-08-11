@@ -409,7 +409,8 @@ struct aircraft *interactiveReceiveData(struct modesMessage *mm) {
 //
 // Show the currently captured interactive data on screen.
 //
-void interactiveShowData(void) {
+void interactiveShowData(void) 
+{
     struct aircraft *a = Modes.aircrafts;
     time_t now = time(NULL);
     int count = 0;
@@ -445,7 +446,8 @@ void interactiveShowData(void) {
     printf(
 "-------------------------------------------------------------------------------\n");
 
-    while(a && (count < Modes.interactive_rows)) {
+    while(a && (count < Modes.interactive_rows)) 
+	{
 
         if ((now - a->seen) < Modes.interactive_display_ttl)
             {
@@ -488,7 +490,9 @@ void interactiveShowData(void) {
                     printf("%06x %-8s %-4s         %-3s %-3s %4s        %-6d  %-2d\n", 
                     a->addr, a->flight, strFl, strGs, strTt, strSquawk, msgs, (int)(now - a->seen));
 
-                } else {                         // Dump1090 display mode
+                }
+				else 
+				{                         // Dump1090 display mode
                     char strMode[5]               = "    ";
                     char strLat[8]                = " ";
                     char strLon[9]                = " ";
@@ -558,9 +562,18 @@ void interactiveShowData(void) {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 
-					struct ToDUMP1090 sendBuf;
-					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+					//struct ToDUMP1090 sendBuf;
 					
+					//char s1[] = "#1#SET#DUMP1090#";
+					
+					char sendBuf[] = "#8#SET#DUMP1090#3BC008,1008,TS00008,2008,2008.0,500.0,315.0,90,56.052567,37.057646,8,10,18";
+					
+					//memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+	
+	               // strncpy(sendBuf, s1,strlen(s1));
+	
+	
+					/*
 					sendBuf.addr = a->addr;                                   // ICAO address
 					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight)); // номер рейса
@@ -574,9 +587,11 @@ void interactiveShowData(void) {
 					sendBuf.lon = (float)a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					*/
 								
 					if((int)(now - a->seen) < 55)
 					{
+					  // write(serial_port, (void*)&sendBuf, strlen(sendBuf));
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
 
