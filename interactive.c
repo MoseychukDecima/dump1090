@@ -595,12 +595,12 @@ void interactiveShowData(void)
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 								*/
-					if((int)(now - sendBuf.seen_time) < 55)
-					{
+					//if((int)(now - sendBuf.seen_time) < 55)
+					//{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
-					}
+					//}
 
-                close(serial_port);
+                    close(serial_port);
         a = a->next;
     }
 }
