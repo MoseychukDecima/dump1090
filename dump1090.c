@@ -85,7 +85,6 @@ void modesInitConfig(void) {
     Modes.interactive_display_ttl = MODES_INTERACTIVE_DISPLAY_TTL;
     Modes.fUserLat                = MODES_USER_LATITUDE_DFLT;
     Modes.fUserLon                = MODES_USER_LONGITUDE_DFLT;
-	Modes.last_update1090         = MODES_INTERACTIVE_1090_TIME;
 }
 //
 //=========================================================================
