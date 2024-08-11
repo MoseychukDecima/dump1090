@@ -446,7 +446,7 @@ void interactiveShowData(void)
     printf(
 "-------------------------------------------------------------------------------\n");
 	struct ToDUMP1090 sendBuf;
-	
+	int send_time=0;
     while(a && (count < Modes.interactive_rows)) 
 	{
 
@@ -537,7 +537,7 @@ void interactiveShowData(void)
 					sendBuf.lon = (float)a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
-
+                    send_time = (int)(now - a->seen);
                 }
                 count++;
             }
@@ -595,7 +595,7 @@ void interactiveShowData(void)
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 								*/
-					if((int)(now - sendBuf.seen_time) < 55)
+					if((int)(now - send_time) < 55)
 					//if(sizeof(sendBuf) > 0)
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
