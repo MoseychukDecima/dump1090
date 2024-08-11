@@ -559,13 +559,13 @@ void interactiveShowData(void) {
 
 					//struct ToDUMP1090 sendBuf;
 					
-					char s1[] = "#1#SET#DUMP1090#";
+					//char s1[] = "#1#SET#DUMP1090#";
 					
-					char sendBuf[128];
+					char sendBuf[] = "#8#SET#DUMP1090#3BC008,1008,TS00008,2008,2008.0,500.0,315.0,90,56.052567,37.057646,8,10,18";
 					
-					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+					//memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 	
-	                strncpy(sendBuf, s1,strlen(s1));
+	               // strncpy(sendBuf, s1,strlen(s1));
 	
 	
 					/*
@@ -586,8 +586,8 @@ void interactiveShowData(void) {
 								
 					if((int)(now - a->seen) < 55)
 					{
-					   write(serial_port, (void*)&sendBuf, strlen(sendBuf));
-					   //write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					  // write(serial_port, (void*)&sendBuf, strlen(sendBuf));
+					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
 
 
