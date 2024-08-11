@@ -445,7 +445,8 @@ void interactiveShowData(void) {
     printf(
 "-------------------------------------------------------------------------------\n");
 
-    while(a && (count < Modes.interactive_rows)) {
+    while(a && (count < Modes.interactive_rows)) 
+	{
 
         if ((now - a->seen) < Modes.interactive_display_ttl)
             {
@@ -579,6 +580,7 @@ void interactiveShowData(void) {
 								
 
                     /* Проверяем наличие новой информации */
+					/*
 	                if ((mstime() - Modes.last_update1090) > MODES_INTERACTIVE_1090_TIME)
                     {
 						Modes.last_update1090 = mstime();
@@ -588,7 +590,7 @@ void interactiveShowData(void) {
 					       write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					    }
 	                }
-								
+								*/
 					//if(sendBuf.seen_time < 55)
 					//{
 					 //  write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
@@ -602,7 +604,7 @@ void interactiveShowData(void) {
 					//write(serial_port, buff, 40);
 					//write(serial_port, buff, 512);
 					
-	                close(serial_port);
+	               // close(serial_port);
 				
                 }
                 count++;
@@ -610,6 +612,20 @@ void interactiveShowData(void) {
         }
         a = a->next;
     }
+	
+	
+                    /* Проверяем наличие новой информации */
+	                if ((mstime() - Modes.last_update1090) > MODES_INTERACTIVE_1090_TIME)
+                    {
+						Modes.last_update1090 = mstime();
+ 		
+				  	    if((int)(now - a->seen) < 55)
+					    {
+					       write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					    }
+	                }
+					 close(serial_port);
+	
 }
 //
 //=========================================================================
