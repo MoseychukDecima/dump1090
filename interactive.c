@@ -557,9 +557,18 @@ void interactiveShowData(void) {
                        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
                     }
 
-					struct ToDUMP1090 sendBuf;
-					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+					//struct ToDUMP1090 sendBuf;
 					
+					char s1[] = "#1#SET#DUMP1090#";
+					
+					char sendBuf[128];
+					
+					memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
+	
+	                strncpy(sendBuf, s1,strlen(s1));
+	
+	
+					/*
 					sendBuf.addr = a->addr;                                   // ICAO address
 					memcpy(sendBuf.squawk,strSquawk, sizeof(strSquawk));      // Flight number
 					memcpy(sendBuf.flight,a->flight, sizeof(sendBuf.flight)); // номер рейса
@@ -573,10 +582,12 @@ void interactiveShowData(void) {
 					sendBuf.lon = (float)a->lon;
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
+					*/
 								
 					if((int)(now - a->seen) < 55)
 					{
-					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					   write(serial_port, (void*)&sendBuf, strlen(sendBuf));
+					   //write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					}
 
 
