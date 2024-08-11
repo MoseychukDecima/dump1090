@@ -409,7 +409,8 @@ struct aircraft *interactiveReceiveData(struct modesMessage *mm) {
 //
 // Show the currently captured interactive data on screen.
 //
-void interactiveShowData(void) {
+void interactiveShowData(void) 
+{
     struct aircraft *a = Modes.aircrafts;
     time_t now = time(NULL);
     int count = 0;
@@ -445,7 +446,8 @@ void interactiveShowData(void) {
     printf(
 "-------------------------------------------------------------------------------\n");
 
-    while(a && (count < Modes.interactive_rows)) {
+    while(a && (count < Modes.interactive_rows)) 
+	{
 
         if ((now - a->seen) < Modes.interactive_display_ttl)
             {
@@ -488,7 +490,9 @@ void interactiveShowData(void) {
                     printf("%06x %-8s %-4s         %-3s %-3s %4s        %-6d  %-2d\n", 
                     a->addr, a->flight, strFl, strGs, strTt, strSquawk, msgs, (int)(now - a->seen));
 
-                } else {                         // Dump1090 display mode
+                }
+				else 
+				{                         // Dump1090 display mode
                     char strMode[5]               = "    ";
                     char strLat[8]                = " ";
                     char strLon[9]                = " ";
