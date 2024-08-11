@@ -576,8 +576,9 @@ void interactiveShowData(void)
 					if((int)(now - a->seen) < 55)
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
+					   memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
 					}
-					
+
 	                close(serial_port);
                 }
                 count++;
