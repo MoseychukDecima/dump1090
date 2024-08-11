@@ -595,8 +595,8 @@ void interactiveShowData(void)
 					sendBuf.seen_time = (int)(now - a->seen);                  // Время получения последнего пакета
 					memcpy(sendBuf.endOfPacket, "\xFF\xFF\xFF", 3);
 								*/
-					//if((int)(now - sendBuf.seen_time) < 55)
-					if(sizeof(sendBuf) > 0)
+					if((int)(now - sendBuf.seen_time) < 55)
+					//if(sizeof(sendBuf) > 0)
 					{
 					   write(serial_port, (void*)&sendBuf, sizeof(sendBuf));
 					   memset(&sendBuf,0, sizeof(sendBuf)); // Очистить массив
