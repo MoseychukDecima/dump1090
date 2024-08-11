@@ -579,9 +579,9 @@ void interactiveShowData(void) {
 								
 
                     /* Проверяем наличие новой информации */
-	                if ((mstime() - Modes.1090_last_update) > MODES_INTERACTIVE_1090_TIME)
+	                if ((mstime() - Modes.last_update1090) > MODES_INTERACTIVE_1090_TIME)
                     {
-						Modes.1090_last_update = mstime();
+						Modes.last_update1090 = mstime();
  		
 				  	    if((int)(now - a->seen) < 55)
 					    {

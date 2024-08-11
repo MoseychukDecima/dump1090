@@ -349,7 +349,7 @@ struct stModes {                             // Internal state
     // Interactive mode
     struct aircraft *aircrafts;
     uint64_t         interactive_last_update; // Last screen update in milliseconds
-	uint64_t         1090_last_update;        // Last screen update in milliseconds
+	uint64_t         last_update1090;        // Last screen update in milliseconds
     time_t           last_cleanup_time;       // Last cleanup time in seconds
 
     // DF List mode
